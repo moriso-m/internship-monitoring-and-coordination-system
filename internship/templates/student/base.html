@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> {% block title%} {%endblock %} </title>
+    <link rel="stylesheet" href="{%  static 'bootstrap-3.3.6\css\bootstrap.min.css' %}">
+    <!-- <link rel="stylesheet" href="{%  static 'bootstrap-4.0.0\css\bootstrap.min.css' %}"> -->
+    <link rel="stylesheet" href="{%  static 'main.css' %}">
+
+    <script src="{%  static 'bootstrap-3.3.6\js\bootstrap.min.js' %}"></script>
+    <!-- <script src="{%  static 'bootstrap-4.4.0\js\bootstrap.min.js' %}"></script> -->
+</head>
+<body class="">
+    <header>
+        <img src=" {% static 'images/logo-2.png' %}" alt="WICS"> 
+    </header>
+    <nav class="navbar navbar-default" id="mainNav">
+		<div class="navbar-header">
+			<!--collapsable navbar-->
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="{% url 'index' %}" class="navbar-brand" style="color:#ffffff;">
+				Field Attachment Moitoring and Coordinaton System
+			</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav">
+				<li>
+					<a href="">
+						Contact us
+					</a>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+                <li>
+					<a href="">
+						Help
+					</a>
+				</li>
+                <li>
+					<a href=" {% url 'login' %}">
+						<i class="fa fa-caret-down"></i>
+							{{ request.user }}
+					</a>
+				</li>
+				<li>
+					<a href="{% url 'logout' %}">Logout</a>
+				</li>
+			</ul>
+		</div>
+    </nav>
+   <div class="row">
+	   <div class="dashboard col-lg-3 col-md-9 bg-success" id="dashboard">
+			<div class="avatar">
+				<img src="{% static 'images/student.png'%}" class=" img-circle img-responsive" alt="avatar">
+				<div class="text">
+					<span><a href="">{{request.user}}</a><br>
+						<span id="on-indicator"></span>
+						<span class="online">online</span>
+					</span>
+				</div>
+			</div>
+			<h4 style="margin-top: 40px;text-align: center;"><i class="fa fa-dashboard"></i> Dashboard</h4>
+		   <ul>
+			   <li><a href="{% url 'application' %}">Internship application</a></li>
+			   <li><a href="{% url 'applicationStatus' %}">view application status</a></li>
+			   <li><a href="">Organization information</a></li>
+			   <li><a href="">Fill logbook</a></li>
+			   <li><a href="">View logbook</a></li>
+			   <li><a href=""></a></li>
+		   </ul>
+	   </div>
+	   <div class="col-lg-9 col-md-9" >
+			{% block content %}
+		
+			{% endblock content %}
+	   </div>
+	</div>
+    <footer>
+        <h5 class="text-center">copyright &#x00A9; 2019</h5>
+    </footer>
+</body>
+</html>

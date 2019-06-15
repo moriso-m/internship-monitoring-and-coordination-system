@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> {% block title%} {%endblock %} </title>
+    <link rel="stylesheet" href="{%  static 'bootstrap-3.3.6\css\bootstrap.min.css' %}">
+    <!-- <link rel="stylesheet" href="{%  static 'bootstrap-4.0.0\css\bootstrap.min.css' %}"> -->
+    <link rel="stylesheet" href="{%  static 'Font-Awesome-master\css\font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{%  static 'main.css' %}">
+
+    <script src="{%  static 'bootstrap-3.3.6\js\bootstrap.min.js' %}"></script>
+    <!-- <script src="{%  static 'bootstrap-4.4.0\js\bootstrap.min.js' %}"></script> -->
+    <script src="{%  static 'jquery-3.3.1.min.js' %}"></script>
+</head>
+<body>
+    <header>
+		<img src=" {% static 'images/logo-2.png' %}" alt="WICS"> 
+		<p><em>The ultimate internship manager</em></p>
+    </header>
+    <nav class="navbar navbar-default" id="mainNav">
+		<div class="navbar-header">
+			<!--collapsable navbar-->
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="{% url 'index' %}" class="navbar-brand" style="color:#ffffff;">
+				Field Attachment Monitoring and Cordination System
+			</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav">
+				<li>
+					<a href = "{% url 'register' %}">Register</a>
+				</li>
+				<li>
+					<a href=" ">About us</a>
+				</li>
+				<li>
+					<a href="">
+						Contact us
+					</a>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+                <li>
+					<a href="">
+						Help
+					</a>
+				</li>
+                <li>
+					<a href="{% url 'login' %}">
+						Login
+					</a>
+				</li>
+			</ul>
+		</div>
+    </nav>
+   <div class="row" id="main-content">
+		{% block content %}
+	   
+		{% endblock content %}
+   </div>
+
+	   
+    <footer>
+        <h5 class="text-center">copyright &#x00A9; 2019</h5>
+    </footer>
+</body>
+</html>

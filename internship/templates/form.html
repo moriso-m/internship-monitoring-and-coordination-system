@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<div class="row col-lg-6 col-md-6 col-lg-offset-3" id="login-container">
+    <div class="col-lg-5" id="login-image">
+        <img src="{% static 'images/logo.png' %}" alt="Internship system">
+    </div>
+    <form action="" method="post" class="col-lg-7 col-md-7" >
+      {% csrf_token %}
+      {% block formFields %}
+
+              
+      {% endblock formFields %}           
+    </form>
+  </div>
+{% endblock content %}
+    

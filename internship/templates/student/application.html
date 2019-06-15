@@ -1,0 +1,35 @@
+{% extends 'student/base.html' %}
+
+{% load static %}
+{% block title %}
+    Internship application
+{% endblock title %}
+    
+
+{% block content %}
+    <ul class="breadcrumb" style="margin-top:-20px;">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li class="active">Applications</li>
+    </ul>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Attachment application
+        </div>
+        <div class="panel-body">
+            <form action="" method="post" class="row col-lg-6 col-md-6 col-lg-offset-3 panel-body">
+
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.label }}" class="col-lg-12 col-md-12">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                        <button type="submit" class="btn btn-primary">
+                            Submit application
+                        </button>
+                </form> 
+        </div>
+    </div>
+
+{% endblock content %}
+    

@@ -1,0 +1,268 @@
+
+html, body {
+
+    color: #636b6f;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 200;
+    min-height: 100vh;
+    margin: 0;
+    border:1px solid #ddd;
+}
+header{
+    width: 300px;
+    margin: 5px auto;
+}
+#mainNav{
+    background:  #b3d9ff;
+}
+/*avatar , username and the online indicator*/
+.avatar{
+	width:100px;
+	position: relative;
+    margin: 20px auto;
+}
+.avatar img{
+	position: relative;
+	margin-left:5px;
+}
+.avatar .text{
+	position:absolute;
+    top: 90px;
+	left:40px;
+	margin:5px auto;
+	font-family: verdana,helvetica;
+	font-size: 1.2em;
+	font-weight: bold;
+	line-height: 15px;
+	clear: left;
+}
+.avatar .text a{
+    padding: 5px;
+	color: #ffffff;
+	text-decoration: none;
+}
+.avatar .text a:hover{
+	 color: #ffffff;
+	 text-decoration: none;
+	background-color:#030a17 ;
+ }
+.avatar #on-indicator{
+	position: absolute;
+    top: 25px;
+	left:10px;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background-color: green;
+}
+.online{
+	position: absolute;
+	font-size: 0.65em;
+	left:30px;
+	top: 25px;
+}
+.content .user{
+    position: relative;
+    height: 300px;
+    border:1px dotted #ddd;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.08);
+}
+.content .user img{
+    margin:5px auto;
+    width: 90px;
+    height: 90px;
+}
+.content .user h3{
+    position: absolute;
+    bottom: 4px;
+    left: 33.3%;
+    color:#008ae6;
+    cursor: pointer;
+}
+/* side bar */
+.dashboard{
+	background-color:/*#222d32*/ #001a33;
+	color:#ffffff;
+    min-height: 100vh;
+	height:auto;
+	margin-top: -20px;
+	border-top: 1px solid #ffffff;
+}
+/*icon that will display dashboard on small devices .... not visible by default*/
+#navicon{
+	display:none ;
+}
+.dashboard ul{
+	padding:0px;
+}
+.dashboard ul li{
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+    margin: 0;
+	/*height: 60px;*/
+	/*background-color: #030a17 ;
+	border-bottom: 1px solid #282828;*/
+
+}
+#close{display: none;}
+.dashboard a{
+	color:#ffffff;
+	text-decoration: none;
+	display: block;
+	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
+	padding: 20px;
+
+}
+.dashboard a:hover{
+	text-decoration: none;
+}
+.dashboard ul li:hover{
+	background-color: #01000a;
+}
+.dashboard-icons{
+    color: #00E466;
+}
+footer{
+    position: relative;
+}
+
+
+.form{
+    border: 1px dotted #ddd;
+    border-radius: 10px;
+}
+#login-container{
+    border:1px solid #ddd;
+    border-radius:10px;
+    height: 380px;
+    
+}
+#login-container form{
+    /*  */
+    background:  rgba(153, 204, 255,0.15);
+    height:380px;
+    margin-right:-50px;
+    width: 427px;
+}
+#login-container form .form-group{
+    margin-top:30px;
+}
+#login-container form button, form button{
+    border-radius: 25px;
+    margin-bottom: 8px;
+    margin-top: 10px;
+}
+#login-image{
+    /* border-right: 1px solid #ddd; */
+    height:380px;
+    margin-left: -30px;
+    margin-top:80px;
+}
+#login-img img{
+    width: 100px;
+}
+
+/* style for tables */
+.table caption{
+    color: black;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+.table th{
+    font-weight: bold;
+    color: black;
+    font-size: 1.2em;
+}
+.table{
+	width: 100%;
+	max-width: 100%;
+	/*margin-bottom: 2rem;*/
+	background-color: #fff;
+}
+.table>thead>tr,
+.table>tbody>tr,
+.table>tfoot>tr{
+   -webkit-transition:all 0.3s ease;
+   -moz-transition:all 0.3s ease;
+   -o-transition:all 0.3s ease;
+   transition:all 0.3s ease;
+}
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td{
+   padding: 5px;
+   text-align: left;
+   border-top:none;
+   -webkit-transition:all 0.3s;
+   -moz-transition:all 0.3s;
+   -o-transition:all 0.3s;
+   transition:all 0.3s;
+}
+.table>thead>tr>th{
+	font-weight: 400;
+	color:#757575;
+	vertical-align:bottom;
+	border-bottom:1px solid rgba(0,0,0,0.12);
+}
+.table > caption{
+	text-align:center;
+}
+.table > caption + thead > tr:first-child>th,
+.table > colgroup + thead > tr:first-child>th,
+.table > thead:first-child  > tr:first-child>th,
+.table > caption + thead > tr:first-child>td,
+.table > colgroup + thead > tr:first-child>td,
+.table > thead:first-child > tr:first-child>td{
+    border-top:0; 
+}
+.table>tbody + tbody{
+	border-top:1px solid rgba(0,0,0,0.12);
+}
+.table .table{
+	background-color: #fff; 
+}
+.table .no-border{
+	border:0;
+}
+.table-condensed > thead >tr > th,
+.table-condensed > tbody >tr > th,
+.table-condensed > tfoot >tr > th,
+.table-condensed > thead >tr > td,
+.table-condensed > tbody >tr > td,
+.table-condensed > tfoot >tr > td{
+	padding:0.8rem;
+}
+.table-bordered{
+	border:0;
+}
+.table-bordered > thead > tr >th,
+.table-bordered > tbody > tr >th,
+.table-bordered > tfoot > tr >th,
+.table-bordered > thead > tr >td,
+.table-bordered > tbody > tr >td,
+.table-bordered > tfoot > tr >td{
+    border:0;
+    border-bottom: 1px solid #e0e0e0;
+}
+.table-bordered > thead > tr >th,
+.table-bordered > thead > tr >td{
+	border-bottom-width: 2px;
+}
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th{
+    background-color: #f5f5f5;
+}
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th{
+	background-color: rgba(0,0,0,0.12);
+}
+.table-bordered > tbody > tr >td #table-i{
+	padding-right:15px;
+	cursor:pointer;
+	font-size: 1.5em;
+}

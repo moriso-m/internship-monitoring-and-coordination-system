@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Internship system
+{% endblock title %}
+    
+{%  block content %}
+    <div class="content row" id="coordinator">
+            <div class="col-lg-4 col-md-4 container">
+                <div class="user">
+                    <img src=" {% static 'images/coordinator.png' %}" alt="Coordinator" class="img-responsive">
+                    <h3 href="#" class="text-center">Coordinator</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 container" id="student">
+                <div class="user">
+                    <img src="{% static 'images/student.png' %}" alt="Student" class="img-responsive">
+                    <h3 href="#"  class="text-center">Student</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4" id="supervisor">
+                <div class="user">
+                    <img src=" {% static 'images/supervisor.png' %}" alt="supervisor" class="img-responsive">
+                    <h3 href="#"  class="text-center">Supervisor</h3>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}
