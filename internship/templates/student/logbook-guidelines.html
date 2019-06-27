@@ -1,0 +1,51 @@
+{% extends 'student/base.html' %}
+
+{% load static %}
+{% block title %}
+    Logbook guidelines
+{% endblock title %}
+    
+
+{% block content %}
+<ul class="breadcrumb" style="margin-top:0px;">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li class="active">Logbook guidelines</li>
+        <li class="pull-right">
+            <a class="rounded-btn pull-right" id="application-btn" href="{% url 'logbook' %}">
+                <i class="fa fa-eye"></i>
+                Record today's activities
+            </a>
+        </li>
+    </ul>
+
+<div class="guidelines">
+    <h3>What is industrial attachment?</h3>
+    This is an academic/industrial experience in which students are attached to a potential employer in the area of Computer Science, Information Technology or Informatics for a maximum of 12 weeks.  Each student will be assigned University supervisor and an industrial supervisor upon commencement of the attachment.  Each student should communicate regularly with the university supervisor and the industrial supervisor should also periodically review his or her work.
+    
+    Each student must keep a weekly report of activities.  This will be submitted as a periodic progress report and may also be used to write the final report.
+    
+    Students on attachment are encouraged where possible to supplement their work experience with research in a related area.  This will provide a greater understanding of their work assignments and/or additional insights for preparing the final attachment report.
+    
+    <h3>How much credit is earned?</h3>
+    An equivalent of 6 units is earned.
+    
+    <h3>How to prepare the weekly reports</h3>
+    At the end of each day of work take a few minutes to record a summary of the day’s activities and experience.  Examples are provided below
+    <ul>
+        <li>Work done</li>
+        <li>Software/hardware used</li>
+        <li>Who you interacted with</li>
+        <li>Problem encountered</li>
+        <li>Opportunities encountered</li>
+        <li>Reflections on your strengths, weakness, likes, or dislikes</li>
+        <li>Research done</li>	
+    </ul>
+    The weekly report should be spiral bonded together with the report and submitted first week of September to your University supervisor after approval by your industrial supervisor.  
+    <br> See <a href=" {% url 'finalReport' %}"> Report Guidelines</a> for instructions on how to write the final report,<br>
+    Activities carried out every will be recorded online in the <a href=" {% url 'logbook' %}">
+        Record Activities
+    </a> page.
+</div>
+
+ 
+{% endblock content %}

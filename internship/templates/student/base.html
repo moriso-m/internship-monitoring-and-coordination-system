@@ -8,14 +8,17 @@
     <title> {% block title%} {%endblock %} </title>
     <link rel="stylesheet" href="{%  static 'bootstrap-3.3.6\css\bootstrap.min.css' %}">
     <!-- <link rel="stylesheet" href="{%  static 'bootstrap-4.0.0\css\bootstrap.min.css' %}"> -->
+    <link rel="stylesheet" href="{%  static 'Font-Awesome-master\css\font-awesome.min.css' %}">
     <link rel="stylesheet" href="{%  static 'main.css' %}">
 
+	<script src="{%  static 'jquery-3.2.1.min.js' %}"></script>
     <script src="{%  static 'bootstrap-3.3.6\js\bootstrap.min.js' %}"></script>
     <!-- <script src="{%  static 'bootstrap-4.4.0\js\bootstrap.min.js' %}"></script> -->
 </head>
 <body class="">
     <header>
-        <img src=" {% static 'images/logo-2.png' %}" alt="WICS"> 
+		<img src=" {% static 'images/logo-2.png' %}" alt="WICS"> 
+		<p><em>The ultimate internship manager</em></p>
     </header>
     <nav class="navbar navbar-default" id="mainNav">
 		<div class="navbar-header">
@@ -26,37 +29,42 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a href="{% url 'index' %}" class="navbar-brand" style="color:#ffffff;">
-				Field Attachment Moitoring and Coordinaton System
+				Field Attachment Monitoring and Coordinaton System
 			</a>
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 			<ul class="nav navbar-nav">
-				<li>
-					<a href="">
-						Contact us
-					</a>
-				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
                 <li>
 					<a href="">
-						Help
-					</a>
-				</li>
-                <li>
-					<a href=" {% url 'login' %}">
-						<i class="fa fa-caret-down"></i>
-							{{ request.user }}
+						<i class="fa fa-question fa-2x"></i>
 					</a>
 				</li>
 				<li>
+					<a id="application-btn" class="rounded-btn" href="{% url 'applicationStatus' %}">
+						<i class="fa fa-eye"></i>
+						View applications
+					</a>
+				</li>
+				<li>
+					<!-- <a href="">
+						<i class="fa fa-bell fa-2x"></i>
+					</a> -->
+				</li>
+				<li>
 					<a href="{% url 'logout' %}">Logout</a>
+				</li>
+                <li>
+					<a href=" {% url 'login' %}">
+							<img src="{% static 'images/student.png' %}" alt="" height="35">
+					</a>
 				</li>
 			</ul>
 		</div>
     </nav>
    <div class="row">
-	   <div class="dashboard col-lg-3 col-md-9 bg-success" id="dashboard">
+	   <div class="dashboard col-lg-3 col-md-3 bg-success" id="dashboard">
 			<div class="avatar">
 				<img src="{% static 'images/student.png'%}" class=" img-circle img-responsive" alt="avatar">
 				<div class="text">
@@ -66,17 +74,44 @@
 					</span>
 				</div>
 			</div>
-			<h4 style="margin-top: 40px;text-align: center;"><i class="fa fa-dashboard"></i> Dashboard</h4>
+			<h4 style="margin-top: 50px;text-align: center;"><i class="fa fa-dashboard"></i> Dashboard</h4>
 		   <ul>
-			   <li><a href="{% url 'application' %}">Internship application</a></li>
-			   <li><a href="{% url 'applicationStatus' %}">view application status</a></li>
-			   <li><a href="">Organization information</a></li>
-			   <li><a href="">Fill logbook</a></li>
-			   <li><a href="">View logbook</a></li>
-			   <li><a href=""></a></li>
+			   <li>
+				   <a href="{% url 'application' %}">
+						<i class="fa a-file-word-o fa-2x dashboard-icons"></i>
+						Internship application
+					</a>
+				</li>
+			   <li><a href="{% url 'applicationStatus' %}">
+					<i class="fa fa-spinner fa-spin fa-2x dashboard-icons"></i>
+					Application status</a></li>
+			   <li><a href=" {% url 'organization' %}">
+				   <i class="fa fa-industry fa-2x dashboard-icons"></i>
+					Organization information</a></li>
+			   <li><a href=" {% url 'logbookGuidelines' %}">
+				   <i class="fa fa-question-circle dashboard-icons"></i>
+					Logbook guidelines</a>
+				</li>
+			   <li><a href=" {% url 'logbook' %}">
+					<i class="fa fa-book fa-2x dashboard-icons"></i>
+					Fill logbook
+					</a>
+				</li>
+			   <li>
+					<a href=" {% url 'viewLogbook' %}">
+						<i class="fa fa-address-book fa-2x dashboard-icons"></i>
+						View logbook
+			   		</a>
+				</li>
+			   <li>
+					<a href=" {% url 'finalReport' %}">
+						<i class="fa fa-calendar fa-2x dashboard-icons"></i>
+						Final Report guidelines
+			   		</a>
+				</li>
 		   </ul>
 	   </div>
-	   <div class="col-lg-9 col-md-9" >
+	   <div class="col-lg-9 col-md-9" style="background: rgba(153, 204, 255,0.12);min-height:80vh;margin-top:-20px;">
 			{% block content %}
 		
 			{% endblock content %}

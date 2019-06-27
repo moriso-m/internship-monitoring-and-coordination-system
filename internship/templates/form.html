@@ -4,6 +4,15 @@
 
 
 {% block content %}
+
+{% if account_created %}
+  <div class="alert alert-success">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    {{ account_created }}
+</div>
+{% endif %}
+  
+
 <div class="row col-lg-6 col-md-6 col-lg-offset-3" id="login-container">
     <div class="col-lg-5" id="login-image">
         <img src="{% static 'images/logo.png' %}" alt="Internship system">

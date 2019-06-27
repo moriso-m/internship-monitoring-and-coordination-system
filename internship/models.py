@@ -1,5 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+def current_year():
+    return datetime.date.today().year
+
+
+def max_value_current_year(value):
+    return MaxValueValidator(current_year())(value)
 
 
 class Department(models.Model):
@@ -7,7 +16,7 @@ class Department(models.Model):
     dept_name = models.CharField('Department name', max_length=50)
     
     def __str__(self):
-         return '(%s) %s'%(self.dept_code, self.name)
+         return '(%s) %s'%(self.dept_code, self.dept_name)
      
 class Course(models.Model):
     course_code = models.CharField(max_length=50, primary_key=True)
@@ -22,10 +31,11 @@ class Student(models.Model):
     adm = models.CharField(max_length=50, primary_key=True)
     full_name = models.CharField(max_length=200)
     course_code = models.ForeignKey(Course, on_delete=models.CASCADE)
-    admission_year = models.DateField( auto_now=False)
+    admission_year =models.PositiveIntegerField(
+        default=current_year(), validators=[MinValueValidator(1984), max_value_current_year])
 
     def __str__(self):
-        return '(%s) %s'%(self.adm_no, self.full_name)
+        return '(%s) %s'%(self.adm, self.full_name)
 
 
 class Coordinator(models.Model):
@@ -45,6 +55,12 @@ class Supervisor(models.Model):
     def __str__(self):
         return '(%s) %s'%(self.staff_no, self.full_name)
     
+
+class AcademicYear(models.Model):
+    year = models.CharField(max_length=50)
+    semester = models.PositiveSmallIntegerField()
+    active = models.BooleanField(default=0)
+    
     
 class AllocatedSupervisor(models.Model):
     supervisor = models.ForeignKey(Supervisor, on_delete=models.CASCADE)
@@ -53,10 +69,15 @@ class AllocatedSupervisor(models.Model):
     
 class Application(models.Model):
     organization = models.CharField( max_length=50)
-    location = models.CharField(max_length=50)
     branch = models.CharField(blank=True, null=True, max_length=50)
     PO_BOX = models.CharField('P.O BOX',null = True, blank=True, max_length=50)
-    status = models.CharField( max_length=50, default = 'pending')
+    application_status =(
+        ( 'P', 'Pending'),
+        ( 'A', 'Awaiting'),
+        ('F', 'Failed'),
+        ('S', 'Successfull'),
+    )
+    status = models.CharField(max_length=50,choices=application_status, default='P')
     application_date = models.DateField(auto_now=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     
@@ -68,10 +89,11 @@ class Organization(models.Model):
     building = models.CharField( max_length=50)
     industrial_supervisor = models.CharField(max_length=50)
     start_date = models.DateField(auto_now=False)
-    
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     
 class Logbook(models.Model):
-    date = models.DateField(auto_now=False)
+    week = models.CharField(max_length=20, default='', blank=True,null=True)
+    date = models.DateField(auto_now=True)
     work_done = models.TextField()
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     

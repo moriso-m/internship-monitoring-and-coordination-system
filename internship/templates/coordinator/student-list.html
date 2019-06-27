@@ -1,0 +1,41 @@
+{% extends 'coordinator/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Students
+{% endblock title %}
+    
+{% block content %}
+    <div class="table-responsive-vertical">
+        <table class="table table-striped table-bordered table-hover" id="students">
+             <thead>
+             <tr>
+                 <th>Admision No.</th>
+                 <th>Name</th>
+                 <th>Course</th>
+                 <th>Admission year</th>
+             </tr>
+             </thead>
+             <tbody>
+             {% for student in students %}
+                 <tr>
+                     <td data-title="">{{ student.adm }}</td>
+                     <td data-title="">{{ student.full_name }}</td>
+                     <td data-title="">{{ student.course_code.course_name }}</td>
+                     <td data-title="">{{ student.admission_year }}</td>
+                 </tr>
+             {% endfor%}
+             </tbody>
+             <tfoot>
+             </tfoot>
+        </table>
+    </div>
+    <script>
+        $(document).ready( function () {
+            $('#students').DataTable();
+        });
+    </script>
+{% endblock content %}
+    

@@ -7,6 +7,7 @@ html, body {
     min-height: 100vh;
     margin: 0;
     border:1px solid #ddd;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 header{
     width: 300px;
@@ -23,12 +24,13 @@ header{
 }
 .avatar img{
 	position: relative;
-	margin-left:5px;
+    margin-left:5px;
+    border-radius: 100%;
 }
 .avatar .text{
 	position:absolute;
-    top: 90px;
-	left:40px;
+    top: 120px;
+	left:0px;
 	margin:5px auto;
 	font-family: verdana,helvetica;
 	font-size: 1.2em;
@@ -44,12 +46,12 @@ header{
 .avatar .text a:hover{
 	 color: #ffffff;
 	 text-decoration: none;
-	background-color:#030a17 ;
+	/* background-color:#030a17 ; */
  }
 .avatar #on-indicator{
 	position: absolute;
     top: 25px;
-	left:10px;
+	left:0px;
 	width: 14px;
 	height: 14px;
 	border-radius: 50%;
@@ -58,7 +60,7 @@ header{
 .online{
 	position: absolute;
 	font-size: 0.65em;
-	left:30px;
+	left:15px;
 	top: 25px;
 }
 .content .user{
@@ -84,9 +86,9 @@ header{
 .dashboard{
 	background-color:/*#222d32*/ #001a33;
 	color:#ffffff;
-    min-height: 100vh;
+    min-height: 40vh;
 	height:auto;
-	margin-top: -20px;
+	/* margin-top: -20px; */
 	border-top: 1px solid #ffffff;
 }
 /*icon that will display dashboard on small devices .... not visible by default*/
@@ -122,7 +124,8 @@ header{
 	background-color: #01000a;
 }
 .dashboard-icons{
-    color: #00E466;
+    color: #b3d9ff;
+    margin-right: 10px;
 }
 footer{
     position: relative;
@@ -149,10 +152,38 @@ footer{
 #login-container form .form-group{
     margin-top:30px;
 }
-#login-container form button, form button{
+#login-container form button, button{
     border-radius: 25px;
     margin-bottom: 8px;
     margin-top: 10px;
+}
+.rounded-btn{
+    border-radius: 25px;
+    padding: 6px 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.42857143;
+    background: #001a33;
+    color: #fff;
+    border: 1px solid transparent;
+}
+.rounded-btn:hover{
+    color: #fff;
+    cursor: pointer;
+}
+#application-btn{
+    color: #001a33;
+    border: 2px solid #001a33;
+    background: #fff;
+    transition: all 1.5s;
+}
+#application-btn:hover{
+    text-decoration: none;
+    background: #001a33;
+    color:#fff;
+    border: 2px solid #b3d9ff;
 }
 #login-image{
     /* border-right: 1px solid #ddd; */
@@ -164,6 +195,16 @@ footer{
     width: 100px;
 }
 
+#organization-form label{
+    margin-right: 120px;
+}
+
+/* organization guidelines */
+.guidelines{
+    font-size: 1.23em;
+    line-height: 1.8em;
+    
+}
 /* style for tables */
 .table caption{
     color: black;

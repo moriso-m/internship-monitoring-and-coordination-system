@@ -12,8 +12,17 @@ urlpatterns = [
     path('student/', views.StudentView.as_view(), name='studentIndex'),
     path('student/application', views.Apply.as_view(), name='application'),
     path('student/application-status', views.ApplicationStatus.as_view(), name='applicationStatus'),
+    path('student/logbook', views.FillLogbook.as_view(), name='logbook'),
+    path('student/view-logbook', views.ViewLogbook.as_view(), name='viewLogbook'),
+    path('student/logbook-pdf', views.LogbookPDF.as_view(), name='logbookPdf'),
+    path('student/logbook-guidelines', views.LogbookGuidelines.as_view(), name='logbookGuidelines'),
+    path('student/final-report', views.FinalReportGuidelines.as_view(), name='finalReport'),
+    path('student/organization', views.OrganizationView.as_view(), name='organization'),
     
     # coordinator routes
-    path("coordinator/", views.CoordinatorView.as_view(), name="coordinatorIndex")
+    path("coordinator/", views.CoordinatorView.as_view(), name="coordinatorIndex"),
+    path("coordinator/applications", views.CoordinatorApplications.as_view(), name="coordinatorApplications"),
+    path("coordinator/update-status", views.UpdateStatus.as_view(), name="updateStatus"),
+    path("coordinator/student", views.StudentList.as_view(), name="students"),
   
 ]

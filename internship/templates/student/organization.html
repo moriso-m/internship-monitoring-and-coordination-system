@@ -1,0 +1,25 @@
+{% extends 'student/base.html' %}
+
+{% load static %}
+{% block title %}
+    Internship application
+{% endblock title %}
+    
+
+{% block content %}
+    <form action="" method="POST" class="row col-lg-6 col-lg-offset-3" id="organization-form">
+        {% csrf_token %}
+        
+        {% for field  in form %}
+        <div class="">
+            <label for="{{ field.label }}" class="">{{ field.label }}</label>
+            {{ field }}
+        </div>       
+        {% endfor %}
+        <input type="hidden" name="student" value="{{ request.user }}">
+        <button type="submit" class="rounded-btn col-lg-6 col-md-4 col-lg-offset-3" style="border-radius: 25px;">
+            <i class="fa fa-upload"></i>
+            Submit details
+        </button>
+    </form>
+{% endblock content %}

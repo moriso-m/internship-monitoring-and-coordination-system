@@ -4,12 +4,12 @@
 
 
 {% block title %}
-    Apllication status
+    Application status
 {% endblock title %}
     
 {% block content %}
     <div class="table-responsive-vertical">
-        <table class="table table-condensed table-bordered table-striped table-hover">
+        <table class="table  table-bordered table-striped table-hover">
              <caption>Applications</caption>
              <thead>
              <tr>
@@ -26,7 +26,7 @@
                      <td data-title="">{{ application.organization }}</td>
                      <td data-title="">{{ application.branch }}</td>
                      <td data-title="">
-                         <button class="btn btn-warning">{{ application.status }}</button>
+                         <button class="btn btn-warning btn-sm">{{ application.status }}</button>
                     </td>
                  </tr>
              {% endfor%}

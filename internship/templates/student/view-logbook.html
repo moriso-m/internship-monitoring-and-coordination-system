@@ -1,0 +1,45 @@
+{% extends 'student/base.html' %}
+
+{% load static %}
+{% block title %}
+    Internship application
+{% endblock title %}
+
+
+
+{% block content %}
+    <a class="rounded-btn pull-right" id="application-btn" href="{% url 'logbookPdf' %}">
+        <i class="fa fa-download"></i>
+        Download
+    </a>
+    <div class="row"></div>
+    <div class="row">
+        {% regroup logbook by date as allDetails %}
+        {% regroup logbook by week as week %}
+
+        {% for week in week %}
+            <h4 class=""><b>Week............... {{ week.grouper }}</b></h4>
+            <table class="table ">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Work done</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for detail in allDetails %}
+                        <tr>
+                            <td>{{ detail.grouper }}</td>
+                            <td>
+                                {% for work in detail.list %}
+                                    {{ work.work_done | linebreaks}}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
+{% endblock content %}
+    

@@ -1,0 +1,39 @@
+{% extends 'student/basePDF.html' %}
+
+{% load static %}
+
+
+{% block content %}
+    <div class="row">
+                {% regroup logbook by date as allDetails %}
+                {% regroup logbook by week as week %}
+        
+                {% for week in week %}
+                    <b>Week..... {{ week.grouper }}</b>
+                    <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="thead" style="width: 30%;">Day</th>
+                                    <th class="thead">Work done</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                    
+                            {% for detail in allDetails %}
+                                <tr>
+                                    <td  class="tdata">{{ detail.grouper }}</td>
+                                    <td  class="tdata">
+                                        {% for work in detail.list %}
+                                            {{ work.work_done | linebreaks}}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+            
+                        </tbody>
+                    </table>
+                {% endfor %}
+    </div>
+    
+{% endblock content %}

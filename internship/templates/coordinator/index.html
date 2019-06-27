@@ -1,0 +1,73 @@
+{% extends 'coordinator/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Coordinator 
+{% endblock title %}
+    
+
+{% block content %}
+<div class="col-lg-12 mt-5">
+    <div class="card">
+        <h5 class="card-header text-center"><i class="fa fa-dashboard"></i>Dashboard</h5>
+        <div class="row">
+            <div class="col-lg-4 mt-2 ml-2">
+                    <div class="card border-success">
+                        <h5 class="card-header text-center alert-success">Applications</h5>
+                        <div class="card-body">
+                        <p class="card-text">
+                            <a href="{% url 'updateStatus' %}">
+                                <i class="fa fa-eye-slash"></i> 
+                                Unseen: <span class="badge badge-warning">{{ pending }}</span>
+                            </a>
+                        </p>
+                        <p class="card-text">
+                            <a href="{% url 'updateStatus' %}">
+                                <i class="fa fa-eye"></i> 
+                                Seen: <span class="badge badge-success">{{ seen }}</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-2 ml-2 mr-2  justify-content-end">
+                <div class="card border-danger">
+                    <h5 class="card-header text-center alert-danger">
+                        <i class="fa fa-user"></i>
+                        Supervisors
+                    </h5>
+                    <div class="card-body ">
+                        <p class="card-text"><i class="fa fa-check"></i> Allocated:</p>
+                        <p class="card-text"><i class="fa fa-close"></i> Unallocated:</p>
+                        <a href="" class=""><i class="fa fa-user"></i> Supervisors</a>
+                            (<span class="badge badge-danger">10</span>)<br>
+                        <a href="" class="card-link"> Allocate supervisors</a>
+                            (<span class="badge badge-success">5</span>)
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 mt-2 mr-2 ml-2">
+                <div class="card">
+                    <h5 class="card-header text-center alert-danger">Academic year</h5>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <i class="fa fa-calendar"></i> 
+                            Academic Year: <strong>{{ year.year }}</strong>
+                        </p>
+                        <p class="card-text">
+                            <i class="fa fa-calendar-o"></i> 
+                            Semester: {{ year.semester }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+    
+
+
+{% endblock content %}
+    

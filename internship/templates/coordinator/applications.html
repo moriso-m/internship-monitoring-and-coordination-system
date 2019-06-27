@@ -1,0 +1,51 @@
+{% extends 'coordinator/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Applications
+{% endblock title %}
+    
+{% block content %}
+
+    <div class="table-responsive-vertical col-12">
+            <h3 class="text-center">Applications</h3>
+        <table class="table  table-bordered table-striped table-hover datatable-1" id="applications">
+            
+             <thead>
+             <tr>
+                 <th>No.</th>
+                 <th>Student</th>
+                 <th>Organization</th>
+                 <th>P.O BOX</th>
+                 <th>Branch</th>
+                 <th>Status</th>
+             </tr>
+             </thead>
+             <tbody>
+             {% for application in applications%}
+                 <tr>
+                     <td data-title="">{{ forloop.counter }}</td>
+                     <td data-title="">{{ application.student }}</td>
+                     <td data-title="">{{ application.organization }}</td>
+                     <td data-title="">{{ application.PO_BOX }}</td>
+                     <td data-title="">{{ application.branch }}</td>
+                     <td data-title="">
+                         <span class="badge badge-warning">{{ application.status }}</span>
+                         <!-- <button class="btn btn-warning btn-sm">{{ application.status }}</button> -->
+                    </td>
+                 </tr>
+             {% endfor%}
+             </tbody>
+             <tfoot>
+             </tfoot>
+        </table>
+    </div>
+    <script>
+            $(document).ready( function () {
+                $('#applications').DataTable();
+            });
+        </script>
+{% endblock content %}
+    
