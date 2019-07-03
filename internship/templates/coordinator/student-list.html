@@ -19,12 +19,12 @@
              </tr>
              </thead>
              <tbody>
-             {% for student in students %}
+             {% for key,student in students.items %}
                  <tr>
                      <td data-title="">{{ student.adm }}</td>
-                     <td data-title="">{{ student.full_name }}</td>
-                     <td data-title="">{{ student.course_code.course_name }}</td>
-                     <td data-title="">{{ student.admission_year }}</td>
+                     <td data-title="">{{ student.name }}</td>
+                     <td data-title="">{{ student.course }}</td>
+                     <td data-title="">{{ student.year }}</td>
                  </tr>
              {% endfor%}
              </tbody>

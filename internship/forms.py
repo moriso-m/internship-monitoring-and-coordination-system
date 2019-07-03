@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student, Department,  Logbook, Message, Organization, Application
+from .models import Student, Department,  Logbook, Message, Organization, Application, Notification,AllocatedSupervisor
 from django.contrib.auth.models import User
 
 
@@ -72,12 +72,12 @@ class ApplicationForm(forms.ModelForm):
 
 class UpdateStatusForm(forms.ModelForm):
     status =forms.ChoiceField(choices =(
+        ('','......'),
         ( 'P', 'Pending'),
         ( 'A', 'Awaiting'),
         ('F', 'Failed'),
         ('S', 'Successfull'),
         ),
-        initial='....',
         widget=forms.Select(attrs={'class': 'form-control'}),required=True)
     
     class Meta:
@@ -112,4 +112,26 @@ class OrganizationForm(forms.ModelForm):
     
     class Meta:
         model = Organization
+        fields = '__all__'
+
+
+class NotificationForm(forms.ModelForm):
+    content = forms.CharField(label='Notification', required=True ,
+                            widget= forms.Textarea(
+                                attrs={'class':'form-control',
+                                        'placeholder':'Notification content ... \U0001F514',
+                                        'rows' : '5',
+                                        'columns' : '6'
+                                    }
+                            ))
+    
+    class Meta:
+        model = Notification
+        fields ="__all__"
+
+
+class AllocateSupervisorForm(forms.ModelForm):
+    
+    class Meta:
+        model = AllocatedSupervisor
         fields = '__all__'

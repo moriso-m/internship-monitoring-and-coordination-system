@@ -24,5 +24,9 @@ urlpatterns = [
     path("coordinator/applications", views.CoordinatorApplications.as_view(), name="coordinatorApplications"),
     path("coordinator/update-status", views.UpdateStatus.as_view(), name="updateStatus"),
     path("coordinator/student", views.StudentList.as_view(), name="students"),
+    path("coordinator/notifications", views.NotificationView.as_view(), name="notifications"),
+    path("coordinator/send-notification", views.sendNotificationView.as_view(), name="sendNotification"),
+    path("coordinator/allocated-supervisors", views.AllocatedSupervisorsView.as_view(), name="allocatedSupervisors"),
+    path("coordinator/allocate-supervisor", views.AllocateSupervisorView.as_view(), name="allocateSupervisor"),
   
 ]

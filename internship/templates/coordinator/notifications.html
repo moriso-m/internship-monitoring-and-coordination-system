@@ -1,0 +1,74 @@
+{% extends 'coordinator/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Notifications
+{% endblock title %}
+    
+{% block content %}
+
+    <div class="">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item "><a href="{% url 'coordinatorIndex' %}">Home</a></li>
+                <li class="breadcrumb-item active">Notifications</li>
+                <li class="float-right justify-content-end">
+
+                </li>
+            </ul>
+            <div class="row col-lg-12">
+                <a class="rounded-btn" id="application-btn" href="{% url 'sendNotification' %}">
+                    <i class="fa fa-send-o"></i>
+                    Send notification
+                </a>
+            </div>
+            {% if messages %}
+                <ul class="messages list-unstyled">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                        {{ message }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+
+            <ul class="list-group">
+                {% for notification in notifications%}
+                    <li class="list-group-item">
+                            <img src="{% static 'images/supervisor.png' %}" alt="avatar" 
+                                class="rounded-circle img-fluid" width="40" height="40">
+                        {{ notification.content }} <br>
+                        <span class="fa fa-clock-o text-error float-right" style="font-style: italic">
+                            {{ notification.date }}
+                        </span>
+                    </li>
+                {% endfor%}
+            </ul>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if notifications.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ notifications.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ notifications.number }} of {{ notifications.paginator.num_pages }}.
+                    </span>
+            
+                    {% if notifications.has_next %}
+                        <a href="?page={{ notifications.next_page_number }}">next</a>
+                        <a href="?page={{ notifications.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+    </div>
+    <script>
+            $(document).ready( function () {
+                $('#applications').DataTable();
+            });
+        </script>
+{% endblock content %}
+    

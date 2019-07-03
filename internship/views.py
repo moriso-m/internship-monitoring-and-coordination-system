@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponse
 from django.views import View
-from .models import Student, Coordinator, Course, Department, Application, Logbook, AcademicYear, AllocatedSupervisor
+from django.db.models import Q
+from .models import Student, Coordinator, Course, Department, Application,Logbook, AcademicYear, AllocatedSupervisor, Notification, Supervisor
 from . import forms
 # import utils for creating pdf
 from .utils import render_to_pdf
+
+from django.core.paginator import Paginator
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -243,11 +247,29 @@ class ViewLogbook(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         user= self.request.user
         student = Student.objects.get(adm = user)
-        logbook_details = Logbook.objects.filter(student=student)
+        logbook = Logbook.objects.filter(student=student)
+        print(logbook)
+        logbook_details = {
+        }
+        for detail in logbook:
+            print(detail.week,detail.work_done, detail.date) 
+            
+            logbook_details[str(detail.week)] = {
+                'date': detail.date,
+                'work_done': detail.work_done
+            }
         print(logbook_details)
+            # try:
+            #     logbook_details[str(detail.week)]['date']=[].append(detail.date)
+            #     logbook_details[str(detail.week)]['work_done'].append(detail.work_done)
+            # except KeyError:
+            #     logbook_details[str(detail.week)]['date'] = [detail.date,]
+            #     logbook_details[str(detail.week)]['week_done'] = [detail.work_done]
+   
         context ={
             'logbook' : logbook_details
         }
+        
         return render(request, self.template, context)
         
     
@@ -371,6 +393,7 @@ class CoordinatorApplications(LoginRequiredMixin, UserPassesTestMixin, View):
     
     
     template = 'coordinator/applications.html'
+    form = forms.UpdateStatusForm
     
     def test_func(self):
         user = self.request.user
@@ -379,8 +402,34 @@ class CoordinatorApplications(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request):
         user = self.request.user
         applications = Application.objects.all()
-        return render(request, self.template, {'applications' : applications })
+        context = {
+            'form': self.form,
+            'applications': applications
+        }
+        return render(request, self.template, context)
     
+    def post(self,request):
+        form = self.form(request.POST or None)
+        applications = Application.objects.all()
+        if form.is_valid():
+            print(request.POST)
+            id=request.POST['id']
+            a = Application.objects.get(pk=id)
+            print(a)
+            form = self.form(request.POST, instance=a)
+            form.save()
+            context ={
+                'form': self.form,
+                'applications':applications,
+                'successfull': 'application status successfully updated'
+            }
+        else:
+            context ={
+                'form': self.form,
+                'applications':applications,
+                'failed' : 'failed to update status.check errors below \U0001F447'
+            }
+        return render(request,self.template,context )
     
 class UpdateStatus(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.LOGIN_URL
@@ -442,6 +491,29 @@ class UpdateStatus(LoginRequiredMixin, UserPassesTestMixin, View):
         context.update(context1)
         return render(request,self.template,context )
         
+# function to fetch list of students in a department  
+def studentsInDepartment(user,src):     
+    department = Coordinator.objects.get(staff_no=user)
+    courses = Course.objects.filter(department=department.department)
+    # print(courses)
+    students={}
+    for course in courses:
+        if src == 'allocated_list':
+            students_per_class= Student.objects.filter(course_code=course).exclude(allocatedsupervisor__department=department.department)
+        else:
+            students_per_class= Student.objects.filter(course_code=course)
+
+        for student in students_per_class:
+            students[str(student.adm)] =  {
+                'adm': student.adm,
+                'name': student.full_name,
+                'course':student.course_code.course_name,
+                'year': student.admission_year,
+            }
+    # for key,student in students.items():
+    #     print(student['adm'])
+    #     print(student['name'])
+    return students
         
 class StudentList(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = 'settings.LOGIN_URL'
@@ -452,7 +524,130 @@ class StudentList(LoginRequiredMixin, UserPassesTestMixin, View):
         return coordinator(self.request)
     
     def get(self, request):
-        students = Student.objects.filter(course_code='COM' or 'BIT')
-        print(students)
-        return render(request,self.template, {'students': students})
+        user = self.request.user
+        # user=User.objects.get(username=user).values_list('username')
+        students = studentsInDepartment(user,'student_list')
+            
+        return render(request,self.template, {'students':students})
 
+
+class NotificationView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.LOGIN_URL
+    template = 'coordinator/notifications.html'
+    
+    def test_func(self):
+        return coordinator(self.request)
+    
+    def get(self, request):
+        notification_list = Notification.objects.all().order_by('-date')
+        paginator = Paginator(notification_list, 6) # Show 25 contacts per page
+        page = request.GET.get('page')
+        notifications = paginator.get_page(page)
+        return render(request, self.template, {'notifications': notifications})
+    
+    def post(self, request):
+        form = self.form(request.POST or None)
+        notifications = Notification.objects.all().order_by('-date')
+       
+            
+class sendNotificationView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.LOGIN_URL
+    template = 'coordinator/send-notification.html'
+    form = forms.NotificationForm
+    
+    def test_func(self):
+        return coordinator(self.request)
+    
+    def get(self, request):
+        return render(request, self.template,{ 'form': self.form})
+    
+    def post(self, request):
+        notifications = Notification.objects.all().order_by('-date')
+        form = self.form(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Notification has been successfully sent')
+        else:
+            messages.warning(request,'Notification not sent, Please try again')
+        
+        return redirect('notifications')
+    
+    # view supervisors already allocated
+class AllocatedSupervisorsView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.LOGIN_URL
+    template = 'coordinator/allocated-supervisors.html'
+    
+    def test_func(self):
+        return coordinator(self.request)
+    
+    def get(self, request):
+        # get coordinators department
+        user = request.user
+        department = Coordinator.objects.get(staff_no=user)
+        supervisors = Supervisor.objects.filter(department=department.department)
+        allocated_supervisors = AllocatedSupervisor.objects.filter(department=department.department)
+        print(allocated_supervisors)
+        context = {
+            'supervisors': allocated_supervisors,
+            'supervisors_list' : supervisors
+        }
+        return render(request, self.template, context)
+    
+    def post(self,request):
+        print (request.POST)
+        student = request.POST['student']
+        supervisor = request.POST['supervisor']
+        department = Coordinator.objects.get(staff_no = request.user)
+        department = Department.objects.get(dept_code=department.department.dept_code)
+        # get instance of each
+        student = Student.objects.get(adm=student)
+        supervisor = Supervisor.objects.get(staff_no=supervisor)
+        print(department,student,supervisor)
+        instance = AllocatedSupervisor.objects.get(student=student)
+        instance.supervisor=supervisor
+        instance.save()
+        message=student,'has been reassigned',supervisor
+        print(request.method)
+        
+        messages.success(request, message)
+        request.method = 'GET'
+        print(request)
+        return redirect('allocatedSupervisors')
+    
+class AllocateSupervisorView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = 'settings.LOGIN_URL'
+    template = 'coordinator/allocate-supervisor.html'
+    # form = forms.StudentListForm
+    
+    def test_func(self):
+        return coordinator(self.request)
+    
+    def get(self, request):
+        user = self.request.user
+        # get coordinator's department
+        department = Coordinator.objects.get(staff_no=user)
+        # find students already allocated supervisors in a given department
+        students_allocated = AllocatedSupervisor.objects.filter(department=department.department)        
+        courses = Course.objects.filter(department=department.department)
+        # get students in a given department who have not yet been allocated a lecturer
+        students=studentsInDepartment(user,'allocated_list')
+        
+        supervisors = Supervisor.objects.filter(department=department.department)
+        
+        return render(request,self.template, {'students': students,'supervisors_list' : supervisors})
+    
+    def post(self,request):
+        print (request.POST)
+        student = request.POST['student']
+        supervisor = request.POST['supervisor']
+        department = Coordinator.objects.get(staff_no = request.user)
+        department = Department.objects.get(dept_code=department.department.dept_code)
+        # get instance of each
+        student = Student.objects.get(adm=student)
+        supervisor = Supervisor.objects.get(staff_no=supervisor)
+        print(department,student,supervisor)
+        AllocatedSupervisor(student=student,supervisor=supervisor,department=department).save()
+        
+        messages.success(request, 'Allocation successfull')
+        return redirect('allocatedSupervisors')
+        

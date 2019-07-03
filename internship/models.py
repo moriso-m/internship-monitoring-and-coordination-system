@@ -65,7 +65,11 @@ class AcademicYear(models.Model):
 class AllocatedSupervisor(models.Model):
     supervisor = models.ForeignKey(Supervisor, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department,default='', on_delete=models.CASCADE)
     
+    def __str__(self):
+        return '(%s) %s'%(self.supervisor, self.department)
+
     
 class Application(models.Model):
     organization = models.CharField( max_length=50)
@@ -104,3 +108,8 @@ class Message(models.Model):
     message_content = models.TextField()
     sent_on = models.DateTimeField(auto_now=True)
     read_status = models.BooleanField(default=False)
+    
+    
+class Notification(models.Model):
+    content = models.TextField()
+    date = models.DateTimeField(auto_now=True)

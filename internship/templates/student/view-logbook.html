@@ -13,7 +13,23 @@
         Download
     </a>
     <div class="row"></div>
-    <div class="row">
+    {% for keys,detail in logbook.items %}
+            <h3>Week ....{{ keys }}</h3>
+            <table class="table ">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Work done</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td>{{ detail.date }}</td>
+                                <td>{{ detail.work_done | linebreaks }}</td>
+                            </tr>
+                 </tbody>
+                 </table>
+        {% endfor %}           
         {% regroup logbook by date as allDetails %}
         {% regroup logbook by week as week %}
 

@@ -211,7 +211,7 @@ footer{
     font-weight: bold;
     font-size: 1.5em;
 }
-.table th{
+/* .table th{
     font-weight: bold;
     color: black;
     font-size: 1.2em;
@@ -219,7 +219,6 @@ footer{
 .table{
 	width: 100%;
 	max-width: 100%;
-	/*margin-bottom: 2rem;*/
 	background-color: #fff;
 }
 .table>thead>tr,
@@ -306,4 +305,4 @@ footer{
 	padding-right:15px;
 	cursor:pointer;
 	font-size: 1.5em;
-}
+} */

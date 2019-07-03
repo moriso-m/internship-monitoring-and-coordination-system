@@ -45,7 +45,7 @@
                        <td>No.</td>
                        <td>Student</td>
                        <td>Organization</td>
-                       <td>status</td>
+                       <td>Action <i class="fa fa-cog "></i></td>
                    </tr>
                </thead>
                <tbody>
@@ -54,7 +54,13 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ application.student }}</td>
                         <td>{{ application.organization }}</td>
-                        <td ><a href="#" class="btn btn-outline-warning" data-id="{{ application.id }}" data-toggle="modal" data-target="#pending" id="pending-id">Update status</a></td>
+                        <td >
+                            <a href="#" class="badge badge-success"
+                                data-id="{{ application.id }}" data-toggle="modal" data-target="#pending" id="pending-id"
+                                onclick="var id = this.getAttribute('data-id'); updateStatus(id)">
+                                Update status
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}   
                </tbody>
@@ -67,7 +73,7 @@
                         <td>No.</td>
                         <td>Student</td>
                         <td>Organization</td>
-                        <td>status</td>
+                        <td>Action <i class="fa fa-cog "></i></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,8 +83,9 @@
                             <td>{{ application.student }}</td>
                             <td>{{ application.organization }}</td>
                             <td >
-                                <a href="#" class="btn btn-outline-warning"
-                                    data-id="{{ application.id }}" data-toggle="modal" data-target="#pending" id="pending-id">
+                                <a href="#" class="badge badge-success"
+                                    data-id="{{ application.id }}" data-toggle="modal" data-target="#pending" id="pending-id"
+                                    onclick="var id = this.getAttribute('data-id'); updateStatus(id)">
                                     Update status
                                 </a>
                             </td>
@@ -94,7 +101,7 @@
                         <td>No.</td>
                         <td>Student</td>
                         <td>Organization</td>
-                        <td>status</td>
+                        <td>Action <i class="fa fa-cog "></i></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -104,8 +111,9 @@
                             <td>{{ application.student }}</td>
                             <td>{{ application.organization }}</td>
                             <td >
-                                <a href="#" class="btn btn-outline-warning"
-                                data-id="{{ application.id }}" data-toggle="modal" data-target="#pending" id="pending-id">
+                                <a href="#" class="badge badge-success"
+                                data-id="{{ application.id }}" data-toggle="modal" data-target="#pending" id="pending-id"
+                                onclick="var id = this.getAttribute('data-id'); updateStatus(id)">
                                     Update status
                                 </a>
                             </td>
@@ -121,7 +129,7 @@
                         <td>No.</td>
                         <td>Student</td>
                         <td>Organization</td>
-                        <td>status</td>
+                        <td>Action <i class="fa fa-cog "></i></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -130,9 +138,11 @@
                             <td>{{ application.student.adm }}</td>
                             <td>{{ application.student.full_name }}</td>
                             <td>{{ application.organization }}</td>
+                            
                             <td >
-                                <a href="#" class="btn btn-outline-warning"
-                                data-id="{{ application.id }}" data-toggle="modal" data-target="#pending" id="pending-id">
+                                <a href="#" class="badge badge-success"
+                                data-id="{{ application.id }}" data-toggle="modal" data-target="#pending" id="pending-id"
+                                onclick="var id = this.getAttribute('data-id'); updateStatus(id)">
                                     Update status
                                 </a>
                             </td>
@@ -173,10 +183,9 @@
     </div>
 
     <script>
-        $('#pending-id').click(function (e) { 
-            id = $(this).data('id');
+        function updateStatus(id){ 
             $('#pending-hidden-input').val(id);
-        });
+        }
 
         $(document).ready( function () {
             $('#pending-table').DataTable();

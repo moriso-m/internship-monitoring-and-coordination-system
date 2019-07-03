@@ -91,30 +91,26 @@
 			<h4 style="margin-top: 50px;text-align: center;"><i class="fa fa-dashboard"></i> Dashboard</h4>
 		   <ul>
 			   <li>
-				   <a href=" {% url 'students' %}">
+				   <a href="">
 						<i class="fa fa-users fa-2x dashboard-icons"></i>
 						Students
 					</a>
 				</li>
-			   <li>
-				   <a href=" {% url 'coordinatorApplications' %}">
-						<i class="fa fa-folder-open fa-2x dashboard-icons"></i>
-						Student' applications
-					</a>
-				</li>
-			   <li><a href=" {% url 'updateStatus' %}">
+			   <li><a href="">
 					<i class="fa fa-spinner fa-spin fa-2x dashboard-icons"></i>
-					Application status</a></li>
+					</a></li>
 			   <li><a href="{% url 'notifications' %}">
 				   <i class="fa fa-bell fa-2x dashboard-icons"></i>
 					Notifications</a></li>
-			   <li><a href=" {% url 'allocateSupervisor' %}">
-				   <i class="fa fa-user-plus fa-2x dashboard-icons"></i>
-					Allocate supervisor</a>
+			   <li>
+                   <a href=" {% url 'allocateSupervisor' %}">
+                        <i class="fa fa-book fa-2x dashboard-icons"></i>
+                        Students logbook
+					</a>
 				</li>
-			   <li><a href=" {% url 'allocatedSupervisors' %}">
+			   <li><a href="">
 				   <i class="fa fa-check-circle fa-2x dashboard-icons"></i>
-					Allocated supervisors</a>
+					Allocated students</a>
 				</li>
 			   <li><a href="">
 					<i class="fa fa-envelope fa-2x dashboard-icons"></i>

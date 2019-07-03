@@ -11,29 +11,49 @@
 
     <div class="table-responsive-vertical col-12">
             <h3 class="text-center">Applications</h3>
-        <table class="table  table-bordered table-striped table-hover datatable-1" id="applications">
+        <table class="table table-hover table-striped table-bordered datatable-1" id="applications">
             
              <thead>
              <tr>
-                 <th>No.</th>
+                 <th>Adm no.</th>
                  <th>Student</th>
                  <th>Organization</th>
                  <th>P.O BOX</th>
                  <th>Branch</th>
                  <th>Status</th>
+                 <th>Action <i class="fa fa-cog text-danger"></i></th>
              </tr>
              </thead>
              <tbody>
              {% for application in applications%}
                  <tr>
-                     <td data-title="">{{ forloop.counter }}</td>
-                     <td data-title="">{{ application.student }}</td>
+                     <td data-title="">{{ application.student.adm }}</td>
+                     <td data-title="">{{ application.student.full_name }}</td>
                      <td data-title="">{{ application.organization }}</td>
                      <td data-title="">{{ application.PO_BOX }}</td>
                      <td data-title="">{{ application.branch }}</td>
                      <td data-title="">
-                         <span class="badge badge-warning">{{ application.status }}</span>
-                         <!-- <button class="btn btn-warning btn-sm">{{ application.status }}</button> -->
+                         
+                         {% if application.status == 'P' %}
+                            <span class="badge badge-warning">Pending</span>
+                         {% endif %}
+                         {% if application.status == 'A' %}
+                            <span class="badge badge-info">Awaiting</span>
+                         {% endif %}
+                         {% if application.status == 'F' %}
+                            <span class="badge badge-danger">Failed</span>
+                         {% endif %}
+                         {% if application.status == 'S' %}
+                            <span class="badge badge-success">Successfull</span>
+                         {% endif %}
+                                                      <!-- <button class="btn btn-warning btn-sm">{{ application.status }}</button> -->
+                    </td>
+                    <td>
+                        <a href="#" class="badge badge-success"
+                        data-id="{{ application.id }}" data-toggle="modal" data-target="#status" id="status-id"
+                        onclick="var id = this.getAttribute('data-id'); updateStatus(id)">
+                            Update&nbsp;status
+                        </a>
                     </td>
                  </tr>
              {% endfor%}
@@ -42,10 +62,46 @@
              </tfoot>
         </table>
     </div>
+
+     <!-- modal -->
+     <div class="modal fade" id="status" tabindex="-1" role="dialog" aria-labelledby="status" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header alert-dark">
+                <h5 class="modal-title" id="exampleModalLabel">Update application status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.label }}">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                    <input type="hidden" name="id" value="" id="status-hidden-input">
+                    <button type="submit" class="rounded-btn col-lg-4 offset-lg-4" id="application-btn">
+                        <i class="fa fa-spinner fa-spin"></i>    
+                        Update status
+                    </button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
     <script>
-            $(document).ready( function () {
-                $('#applications').DataTable();
-            });
-        </script>
+ 
+        function updateStatus(id){
+            // id = this.data('id');
+            $('#status-hidden-input').val(id);
+                
+        }
+        $(document).ready( function () {
+            $('#applications').DataTable();
+        });
+    </script>
 {% endblock content %}
     
