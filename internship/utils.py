@@ -35,8 +35,7 @@ def render_to_pdf(template_src, context_dict={}):
     response['content-Disposition'] ='attachment;'
     # result = BytesIO()
 
-    pdf = pisa.CreatePDF(
-        html,dest=response, link_callback=fetch_resources)
+    pdf = pisa.CreatePDF(html,dest=response, link_callback=fetch_resources)
     if pdf.err:
         return HttpResponse('we had some errors')
     return response

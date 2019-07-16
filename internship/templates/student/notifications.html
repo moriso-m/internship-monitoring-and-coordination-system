@@ -1,0 +1,30 @@
+{% extends 'student/base.html' %}
+
+{% load static %}
+{% block title %}
+    Internship application
+{% endblock title %}
+    
+
+{% block content %}
+<ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'studentIndex' %}">Home</a></li>
+    <li class="breadcrumb-item active"><i class="fa fa-bell"></i></li>
+</ul>
+
+<ul class="list-group">
+    {% for notification in notifications%}
+        <li class="list-group-item">
+            <div class="" style="font-style: italic;font-size: 0.9em;">
+                Coordinator
+            </div>
+            <img src="{% static 'images/supervisor.png' %}" alt="avatar" 
+                class="rounded-circle img-fluid" width="40" height="40">
+            {{ notification.content }} <br>
+            <span class="fa fa-clock-o text-error float-right" style="font-style: italic">
+                {{ notification.date }}
+            </span>
+        </li>
+    {% endfor%}
+</ul>
+{% endblock %}

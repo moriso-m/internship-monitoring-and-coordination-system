@@ -1,0 +1,53 @@
+{% extends 'student/basePDF.html' %}
+
+{% load static %}
+
+
+{% block content %}
+    <div class="row">
+        <!-- {% regroup logbook by week as week %}
+        
+            {% for week in week %}
+                <b>Week..... {{ week.grouper }}</b>
+                <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="thead" style="width: 30%;">Day</th>
+                                <th class="thead">Work done</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for task in week.list %}
+                            <tr>
+                                <td  class="tdata">{{ task.date }}</td>
+                                <td  class="tdata">{{ task.work_done | linebreaks  }}</td>
+                            </tr>
+                        {% endfor %}
+        
+                    </tbody>
+                </table>
+            {% endfor %} -->
+            {% regroup logbook by week as week %}
+        
+            {% for week in week %}
+                    <h3>Week ....{{ week.grouper }}</h3>
+                    <table class="table table-hover table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="thead" style="width: 30%;">Day</th>
+                                    <th class="thead">Work done</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in week.list %}
+                                    <tr>
+                                        <td class="tdata">{{ task.date }}</td>
+                                        <td class="tdata">{{ task.work_done | linebreaks }}</td>
+                                    </tr>
+                                {% endfor %}
+                         </tbody>
+                         </table>
+                {% endfor %}     
+    </div>
+    
+{% endblock content %}

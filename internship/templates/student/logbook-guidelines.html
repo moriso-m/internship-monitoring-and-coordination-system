@@ -7,11 +7,11 @@
     
 
 {% block content %}
-<ul class="breadcrumb" style="margin-top:0px;">
-        <li><a href="{% url 'index' %}">Home</a></li>
-        <li class="active">Logbook guidelines</li>
-        <li class="pull-right">
-            <a class="rounded-btn pull-right" id="application-btn" href="{% url 'logbook' %}">
+<ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item active">Logbook guidelines</li>
+        <li class="pull-right breadcrumb-item">
+            <a class="rounded-btn justify-content-end" id="application-btn" href="{% url 'logbook' %}">
                 <i class="fa fa-eye"></i>
                 Record today's activities
             </a>

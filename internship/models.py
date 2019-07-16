@@ -92,11 +92,16 @@ class Organization(models.Model):
     town = models.CharField(max_length=50)
     building = models.CharField( max_length=50)
     industrial_supervisor = models.CharField(max_length=50)
-    start_date = models.DateField(auto_now=False)
+    start_date = models.DateField(auto_now=False,
+                                  validators=[MinValueValidator(2019), max_value_current_year])
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     
+    def __str__(self):
+        return '(%s) %s'%(self.student, self.organization)
+    
+    
 class Logbook(models.Model):
-    week = models.CharField(max_length=20, default='', blank=True,null=True)
+    week = models.PositiveIntegerField()
     date = models.DateField(auto_now=True)
     work_done = models.TextField()
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -113,3 +118,4 @@ class Message(models.Model):
 class Notification(models.Model):
     content = models.TextField()
     date = models.DateTimeField(auto_now=True)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)

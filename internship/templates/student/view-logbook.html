@@ -13,49 +13,28 @@
         Download
     </a>
     <div class="row"></div>
-    {% for keys,detail in logbook.items %}
-            <h3>Week ....{{ keys }}</h3>
-            <table class="table ">
-                    <thead>
-                        <tr>
-                            <th>Day</th>
-                            <th>Work done</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            <tr>
-                                <td>{{ detail.date }}</td>
-                                <td>{{ detail.work_done | linebreaks }}</td>
-                            </tr>
-                 </tbody>
-                 </table>
-        {% endfor %}           
-        {% regroup logbook by date as allDetails %}
-        {% regroup logbook by week as week %}
 
-        {% for week in week %}
-            <h4 class=""><b>Week............... {{ week.grouper }}</b></h4>
-            <table class="table ">
-                    <thead>
+    {% regroup logbook by week as week %}
+        
+    {% for week in week %}
+        <h3>Week ....{{ week.grouper }}</h3>
+        <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Work done</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in week.list %}
                         <tr>
-                            <th>Day</th>
-                            <th>Work done</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for detail in allDetails %}
-                        <tr>
-                            <td>{{ detail.grouper }}</td>
-                            <td>
-                                {% for work in detail.list %}
-                                    {{ work.work_done | linebreaks}}
-                                {% endfor %}
-                            </td>
+                            <td>{{ task.date | date:"D" }}<br>{{ task.date }}</td>
+                            <td>{{ task.work_done | linebreaks }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
-            </table>
-        {% endfor %}
+                </table>
+    {% endfor %}
     </div>
 {% endblock content %}
     

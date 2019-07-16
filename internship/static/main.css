@@ -1,6 +1,5 @@
 
 html, body {
-
     color: #636b6f;
     font-family: 'Nunito', sans-serif;
     font-weight: 200;
@@ -201,7 +200,7 @@ footer{
 
 /* organization guidelines */
 .guidelines{
-    font-size: 1.23em;
+    /* font-size: 1.23em; */
     line-height: 1.8em;
     
 }
@@ -306,3 +305,13 @@ footer{
 	cursor:pointer;
 	font-size: 1.5em;
 } */
+
+/* sending messages */
+#reply-form{
+    position: relative;
+}
+#reply .form-row input{
+    position: fixed;
+    bottom: 5px;
+
+}

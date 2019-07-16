@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.views import View
 from django.db.models import Q
-from .models import Student, Coordinator, Course, Department, Application,Logbook, AcademicYear, AllocatedSupervisor, Notification, Supervisor
+from .models import Student, Coordinator, Course, Department, Application,Organization, Logbook, AcademicYear, AllocatedSupervisor, Notification, Supervisor
 from . import forms
 # import utils for creating pdf
 from .utils import render_to_pdf
@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import login, logout, update_session_auth_hash, authenticate
 import datetime
+import json
 # from . import forms
 
 # Create your views here.
@@ -56,13 +57,14 @@ class Login(View):
             # query each model
             student = Student.objects.filter(adm=username).exists()
             coordinator = Coordinator.objects.filter(staff_no=username).exists()
+            supervisor = Supervisor.objects.filter(staff_no=username).exists()
             # redirect to appropriate portal
             if student:
                 return redirect('studentIndex')
             elif coordinator:
                 return redirect('coordinatorIndex')
-            else:
-                return redirect('admin')
+            elif supervisor:
+                return redirect('supervisorIndex')
         else:
             context ={
                 'form': self.form(request.POST),
@@ -95,8 +97,9 @@ class Register(View):
             # check who the user is
             student = Student.objects.filter(adm=username).exists()
             coordinator = Coordinator.objects.filter(staff_no=username) .exists()
+            supervisor = Supervisor.objects.filter(staff_no=username) .exists()
             
-            if student or coordinator:
+            if student or coordinator or supervisor:
                 email = form.cleaned_data['email']
                 password = form.cleaned_data['password']
 
@@ -113,11 +116,9 @@ class Register(View):
                 register_user = User.objects.create_user(username, email, password)
                 register_user.save()
                 
-                context ={
-                    'form' : forms.LoginForm,
-                    'account_created' : 'Account has been successfully created'
-                }
-                return render(request, 'login.html', context)
+                
+                messages.success(request,'Account has been successfully created')
+                return redirect('login')
             
             else:
                 context = {
@@ -253,22 +254,19 @@ class ViewLogbook(LoginRequiredMixin, UserPassesTestMixin, View):
         }
         for detail in logbook:
             print(detail.week,detail.work_done, detail.date) 
-            
-            logbook_details[str(detail.week)] = {
-                'date': detail.date,
-                'work_done': detail.work_done
+                
+            logbook_details = Logbook.objects.filter(student=student)
+            context ={
+                'logbook' : logbook_details
             }
-        print(logbook_details)
+            print(logbook_details)
             # try:
             #     logbook_details[str(detail.week)]['date']=[].append(detail.date)
             #     logbook_details[str(detail.week)]['work_done'].append(detail.work_done)
             # except KeyError:
             #     logbook_details[str(detail.week)]['date'] = [detail.date,]
             #     logbook_details[str(detail.week)]['week_done'] = [detail.work_done]
-   
-        context ={
-            'logbook' : logbook_details
-        }
+
         
         return render(request, self.template, context)
         
@@ -335,26 +333,73 @@ class OrganizationView(LoginRequiredMixin, UserPassesTestMixin, View):
         return Student.objects.filter(adm=user).exists()
     
     def get(self, request):
-        return render(request, self.template, {'form': self.form})
-    
-    def post(self, request):
-        form = self.form(request.POST)
-        if form.is_valid():
-            student = Student.objects.get(adm=request.user)
-            
-            instance = form.save(commit=False)
-            instance.student = student
-            instance.save()
-            context ={
-                    'form' : form,
-                    'success' :  'details successfully filled in your logbook'
-            }           
+        student = Student.objects.get(adm=request.user)
+        check = Organization.objects.filter(student=student).exists()
+        if not check:
+            return render(request, self.template)
         else:
+            check = Organization.objects.get(student=student)
+            print(check)         
             context = {
-                'form': self.form(request.POST),
-            } 
+                'org': check.organization,
+                'county': check.county,
+                'town': check.town,
+                'start': check.start_date,
+                'building': check.building,
+                'supervisor': check.industrial_supervisor,
+                
+            }
+            return render(request, self.template, context)
         
+    def post(self, request):
+        org = request.POST['organization']
+        county = request.POST['county']
+        town = request.POST['town']
+        start_date = request.POST['start']
+        building = request.POST['building']
+        supervisor = request.POST['supervisor']
+        student = Student.objects.get(adm=request.user)
+        check = Organization.objects.filter(student=student)
+        if not check:
+            instance = Organization(organization=org,county=county,town=town,
+                                    start_date=start_date,building=building,industrial_supervisor=supervisor,student=student)
+            instance.save()
+            # context ={
+            #         'success' :  'detail successfully saved'
+            # }
+            return redirect('organization')
+        else:
+            student = Student.objects.get(adm=request.user)
+            instance = Organization.objects.get(student=student)
+            instance.organization = org
+            instance.county = county
+            instance.town = town
+            instance.start_date = start_date
+            instance.building = building
+            instance.industrial_supervisor = supervisor
+            instance.save()
+            return redirect('organization')
         return render(request, self.template, context)
+    
+    
+class StudentNotification(LoginRequiredMixin,UserPassesTestMixin, View):
+    login_url = settings.LOGIN_URL
+    redirect_field_name = 'redirect_to'
+    
+    
+    template = 'student/notifications.html'
+    
+    def test_func(self):
+        user = self.request.user
+        return Student.objects.filter(adm=user).exists()
+    
+    def get(self,request):
+        student = Student.objects.get(adm=request.user)
+        print(student.course_code)
+        course = Course.objects.get(course_code=student.course_code.course_code)
+        notifications = Notification.objects.filter(department=course.department)
+
+        return render(request, self.template,  {'notifications': notifications})
     # coordinator views
 class CoordinatorView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.LOGIN_URL
@@ -563,9 +608,13 @@ class sendNotificationView(LoginRequiredMixin, UserPassesTestMixin, View):
     
     def post(self, request):
         notifications = Notification.objects.all().order_by('-date')
+        cdn = Coordinator.objects.get(staff_no=request.user)
         form = self.form(request.POST or None)
         if form.is_valid():
-            form.save()
+            n = form.save(commit=False)
+            n.department = cdn.department
+            n.save()
+            
             messages.success(request, 'Notification has been successfully sent')
         else:
             messages.warning(request,'Notification not sent, Please try again')
@@ -651,3 +700,133 @@ class AllocateSupervisorView(LoginRequiredMixin, UserPassesTestMixin, View):
         messages.success(request, 'Allocation successfull')
         return redirect('allocatedSupervisors')
         
+        
+# supervisor views
+
+def supervisor(request):
+    user = request.user
+    return Supervisor.objects.filter(staff_no=user).exists()
+
+class SupervisorView(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.LOGIN_URL
+    
+    template = 'supervisor/students-assigned.html'
+    
+    def test_func(self):
+        return supervisor(self.request)
+    
+    def get(self,request):
+        supervisor = Supervisor.objects.get(staff_no=request.user)
+        students = AllocatedSupervisor.objects.filter(supervisor=supervisor)
+        
+        # get organization detail for where each each student is at
+        organization_details={}
+        for student in students:
+            # print(student.student.adm)
+            adm =student.student.adm
+            details = Organization.objects.filter(student=student.student)
+            # print(details)
+            for detail in details:
+                organization_details[student.student.adm] = {
+                    'adm': detail.student.adm,
+                    'name' : detail.student.full_name,
+                    'organization': detail.organization,
+                    'county': detail.county,
+                    'town': detail.town,
+                    'building': detail.building
+                }
+        organization_details = json.dumps(organization_details)
+        print(organization_details)
+        context ={
+            'students': students,
+            'organization': organization_details
+        }
+        return render(request, self.template, context)
+    
+    
+class Logbooks(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.LOGIN_URL
+    
+    template = 'supervisor/logbooks.html'
+    
+    def test_func(self):
+        return supervisor(self.request)
+    
+    def get(self,request):
+        supervisor = Supervisor.objects.get(staff_no=request.user)
+        students = AllocatedSupervisor.objects.filter(supervisor=supervisor)
+        
+        logbook_details = {}
+        
+        for student in students:
+            logbooks = Logbook.objects.filter(student=student.student)
+            print(logbooks)
+            for logbook in logbooks:
+                logbook_details[logbook.student.adm] ={
+                    'adm': logbook.student.adm,
+                    'name':logbook.student.full_name,
+                    'date':logbook.date,
+                    'work_done': logbook.work_done
+                }
+        print(logbook_details)
+        context ={
+            'students':students,
+            'logbook': logbook_details
+        }
+        return render(request, self.template, context)
+    
+    
+class StudentLogbook(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.LOGIN_URL
+    
+    template = 'supervisor/student-logbook.html'
+    
+    def test_func(self):
+        return supervisor(self.request)
+    
+    def get(self,request, adm):
+        student = Student.objects.get(adm=adm)
+        logbook = Logbook.objects.filter(student=student)
+        print(logbook)
+        
+        return render(request, self.template, {'logbook':logbook, 'student': student})
+    
+
+class LogbookPDF_supervisor(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = settings.LOGIN_URL
+    redirect_field_name = 'redirect_to'
+    
+    template = 'supervisor/logbook-pdf.html'
+    
+    def test_func(self):
+        return supervisor(self.request)
+    
+    def get(self, request, adm):
+        student = Student.objects.get(adm=adm)
+        logbook_details = Logbook.objects.filter(student=student)
+        context ={
+            'student' : student,
+            'logbook' : logbook_details
+        }
+        pdf = render_to_pdf('supervisor/logbook-pdf.html', context)
+        return HttpResponse(pdf, content_type='application/pdf')
+    
+    
+class SendMessage_supervisor(LoginRequiredMixin,UserPassesTestMixin, View):
+    login_url = settings.LOGIN_URL
+    redirect_field_name = 'redirect_to'
+    
+    template = 'supervisor/send-message.html'
+    
+    def test_func(self):
+        return supervisor(self.request)
+    
+    def get(self,request):
+        supervisor = Supervisor.objects.get(staff_no=request.user)
+        students = AllocatedSupervisor.objects.filter(supervisor=supervisor)
+        
+        context ={
+            'students': students,
+            'supervisor': supervisor
+        }
+        return render(request, self.template, context)

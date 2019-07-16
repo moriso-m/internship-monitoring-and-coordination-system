@@ -1,0 +1,55 @@
+{% extends 'supervisor/base.html' %}
+
+{% load static %}
+{% block title %}
+    Internship application
+{% endblock title %}
+
+
+
+{% block content %}
+    <a class="rounded-btn pull-right" id="application-btn" href="{% url 'studentLogbookPdf' student.adm %}">
+        <i class="fa fa-comment-o"></i>
+        Comment
+    </a>
+    <a class="rounded-btn pull-right" id="application-btn" href="{% url 'studentLogbookPdf' student.adm %}">
+        <i class="fa fa-download"></i>
+        Download
+    </a>
+    <div class="row">
+       <p style="font-weight: bold">
+            Adm no: <span class="badge badge-success">{{ student.adm }} </span>
+            Name: <span class="badge badge-warning">{{ student.full_name }}</span>
+            Course : <span class="badge badge-dark">{{ student.course_code }}</span>
+       </p>
+    </div>
+    {% regroup logbook by week as week %}
+        
+    {% for week in week %}
+            <h3>Week ....{{ week.grouper }}</h3>
+            <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Work done</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in week.list %}
+                            <tr>
+                                <td>{{ task.date }}</td>
+                                <td>{{ task.work_done | linebreaks }}</td>
+                            </tr>
+                        {% endfor %}
+                 </tbody>
+                 </table>
+                 <!-- <form action="" method="post">
+                     <label for="comment">Supervisor's comment</label>
+                     <textarea name="comment" class="form-control col-lg-8" cols="30" rows="4" placeholder="Comments by supervisor"></textarea>
+                     <button type="submit" class="btn btn-success"> submit</button>
+                 </form> -->
+                 <hr>
+        {% endfor %}     
+    </div>
+{% endblock content %}
+    

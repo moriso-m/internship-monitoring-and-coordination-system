@@ -7,17 +7,17 @@
 
 {% block content %}
     <ul class="breadcrumb" style="margin-top:0px;">
-        <li><a href="{% url 'index' %}">Home</a></li>
-        <li class="active">Fill logbook</li>
-        <li class="pull-right">
-            <a class="rounded-btn pull-right" id="application-btn" href="{% url 'applicationStatus' %}">
-                <i class="fa fa-eye"></i>
-                View Logbook
-            </a>
-        </li>
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item active">Fill logbook</li>
     </ul>
 
-    <div class="row"></div>
+    <div class="row">
+        <a class="rounded-btn float-right justify-content-end" id="application-btn"
+             href="{% url 'viewLogbook' %}">
+            <i class="fa fa-eye"></i>
+            View Logbook
+        </a>
+    </div>
     {% if success %}
     <div class="alert alert-success">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -31,35 +31,41 @@
     </div>
     {% endif %}
     {{ form.non_field_errors }}
+    <div class="card mt-3"></form>
+        <!-- <div class="card-header text-center">
+            Attachment application
+        </div> -->
 
-    <form action="" method="POST" class="row col-lg-6 col-md-4 col-lg-offset-3">
-        {% csrf_token %}
-        
-        {% for field  in form %}
-        <div class="form-group
-        {% if field.errors %}
-            has-error has-feedback
-        {% endif %}
-        ">
-            <label for="{{ field.label }}" class="col-lg-12 col-md-12">{{ field.label }}</label>
-            {{ field }}
-            {{ field.errors }}
-        </div>       
-        {% endfor %}
-            
-        <div class="form-group
-        {% if field_errors %}
-            has-error has-feedback
-        {% endif %}
-        ">
-            <label for="{{ field.label }}" class="col-lg-12 col-md-12">{{ field.label }}</label>
-            {{ field }}
+
+        <div class="row no-gutters">
+            <div class="col-lg-4" id="">
+                <img src="{% static 'images/logo.png' %}" alt="Internship system"
+                    height="180" style="margin-top: 50px" class="img-responsive card-img">
+            </div>
+            <div class="card-body " style="background:  rgba(153, 204, 255,0.15);">
+                <h5 class="card-title text-center">Today's activities</h5>
+                <form action="" method="post" class="" >
+                    {% csrf_token %}
+                    
+                    {% for field  in form %}
+                    <div class="form-group
+                    {% if field.errors %}
+                        has-error has-feedback
+                    {% endif %}
+                    ">
+                        <label for="{{ field.label }}" class="">{{ field.label }}</label>
+                        {{ field }}
+                        <span class="text-danger">{{ field.errors }}</span>
+                    </div>       
+                    {% endfor %}
+                    <input type="hidden" name="student" value="{{ request.user }}">
+                    <button type="submit" class="rounded-btn col-md-6 offset-md-3" style="border-radius: 25px;">
+                        <i class="fa fa-pencil"></i>
+                        Record activities
+                    </button>
+                </form>
+            </div>
         </div>
-        <input type="hidden" name="student" value="{{ request.user }}">
-        <button type="submit" class="rounded-btn col-lg-6 col-md-4 col-lg-offset-3" style="border-radius: 25px;">
-            <i class="fa fa-pencil"></i>
-            Record activities
-        </button>
-    </form>
+    </div>
 {% endblock content %}
     

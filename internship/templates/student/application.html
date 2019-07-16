@@ -11,51 +11,57 @@
         <li><a href="{% url 'index' %}">Home</a></li>
         <li class="active">Applications</li>
     </ul> -->
-    <a class="rounded-btn pull-right" id="application-btn" href="{% url 'applicationStatus' %}">
-        <i class="fa fa-eye"></i>
-        View applications
-    </a>
-    <div class="row"></div>
-    <div class="panel panel-default">
-        <div class="panel-heading text-center">
-            Attachment application
-        </div>
-        <div class="panel-body">
-            <div class="alert alert-warning">
-                <i class="fa fa-exclamation-triangle"></i>
-                Please note. You can make a maximum of  three applications
-            </div>
-            {% if success %}
-                <div class="alert alert-success">
-                    <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    {{ success }}
-                </div>
-            {% endif %}
-            {% if failed %}
-                <div class="alert alert-danger">
-                    <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    {{ failed }}
-                </div>
-            {% endif %}
-            <div class="col-lg-5" id="">
-                <img src="{% static 'images/logo.png' %}" alt="Internship system"
-                     height="200" style="margin-top: 50px" class="img-responsive">
-            </div>
-            <form action="" method="post" class="row col-lg-6 col-md-6  panel-body">
-                {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-group">
-                        <label for="{{ field.label }}" class="col-lg-12 col-md-12">{{ field.label }}</label>
-                        {{ field }}
-                    </div>
-                {% endfor %}
-                <input type="hidden" name="student" value="{{ request.user }}">
-                <button type="submit" class="rounded-btn col-lg-6 col-md-4 col-lg-offset-3" style="border-radius: 25px;">
-                    Submit application
-                </button>
-                </form> 
-        </div>
+    <div class="row">
+        <a class="rounded-btn float-right" id="application-btn" href="{% url 'applicationStatus' %}">
+            <i class="fa fa-eye"></i>
+            View applications
+        </a>
     </div>
+    <div class="row container">
+        <div class="alert alert-danger col-lg-12">
+            <i class="fa fa-exclamation-triangle"></i>
+            Please note. You can make a maximum of  three applications
+        </div>
+        {% if success %}
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                {{ success }}
+            </div>
+        {% endif %}
+        {% if failed %}
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                {{ failed }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="card mt-3">
+        <!-- <div class="card-header text-center">
+            Attachment application
+        </div> -->
+            <div class="row no-gutters">
+                <div class="col-lg-4" id="">
+                    <img src="{% static 'images/logo.png' %}" alt="Internship system"
+                        height="180" style="margin-top: 50px" class="img-responsive card-img">
+                </div>
+                <div class="card-body " style="background:  rgba(153, 204, 255,0.15);">
+                    <h3 class="card-title">Apply for internship</h3>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-group">
+                                <label for="{{ field.label }}" class="col-lg-12 col-md-12">{{ field.label }}</label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        <input type="hidden" name="student" value="{{ request.user }}">
+                        <button type="submit" class="rounded-btn col-md-6 offset-md-3" style="border-radius: 25px;">
+                            Submit application
+                        </button>
+                    </form> 
+                </div>
+            </div>
+        </div>
 
 {% endblock content %}
     

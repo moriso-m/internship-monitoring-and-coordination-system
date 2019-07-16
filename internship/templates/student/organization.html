@@ -7,19 +7,144 @@
     
 
 {% block content %}
-    <form action="" method="POST" class="row col-lg-6 col-lg-offset-3" id="organization-form">
+<ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'studentIndex' %}">Home</a></li>
+    <li class="breadcrumb-item active">Organization details</li>
+</ul>
+{% if success %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        {{ success }}
+    </div>
+{% endif %}
+{% if exists %}
+    <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <em>{{ exists }}</em>
+    </div>
+{% endif %}
+{% if failed %}
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        {{ failed }}
+    </div>
+{% endif %}
+{% if org %}
+    <button class="btn btn-outline-info" id="edit">
+        <i class="fa fa-pencil"></i>
+        Edit
+    </button>
+{% endif %}
+    <form action="" method="POST" class="" id="organization-form">
         {% csrf_token %}
-        
-        {% for field  in form %}
-        <div class="">
-            <label for="{{ field.label }}" class="">{{ field.label }}</label>
-            {{ field }}
-        </div>       
-        {% endfor %}
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="organization">Organization:</label>
+                <input type="text" name="organization" id=" " value="{{ org }}" class="form-control" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="start" >Start date</label>
+                <input type="date" name="start" id="date" class="form-control" required>
+            </div> 
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="county">County:</label>
+                <select class="form-control" name="county" id="county" required>
+                    
+                    {% if county %}
+                        <option value="{{ county }}" selected>{{ county }}</option>
+                    {% endif %}
+                    <option value="">---</option>
+                    <option value='Baringo'>Baringo</option>
+                    <option value='Bomet'>Bomet</option>
+                    <option value='Bungoma'>Bungoma</option>
+                    <option value='Busia'>Busia</option>
+                    <option value='Elgeyo-Marakwet'>Elgeyo-Marakwet</option>
+                    <option value='Embu'>Embu</option>
+                    <option value='Garissa'>Garissa</option>
+                    <option value='Homa Bay'>Homa Bay</option>
+                    <option value='Isiolo'>Isiolo</option>
+                    <option value='Kajiado'>Kajiado</option>
+                    <option value='Kakamega'>Kakamega</option>
+                    <option value='Kericho'>Kericho</option>
+                    <option value='Kiambu'>Kiambu</option>
+                    <option value='Kilifi'>Kilifi</option>
+                    <option value='Kirinyaga'>Kirinyaga</option>
+                    <option value='Kisii'>Kisii</option>
+                    <option value='Kisumu'>Kisumu</option>
+                    <option value='Kitui'>Kitui</option>
+                    <option value='Kwale'>Kwale</option>
+                    <option value='Laikipia'>Laikipia</option>
+                    <option value='Lamu'>Lamu</option>
+                    <option value='Machakos'>Machakos</option>
+                    <option value='Makueni'>Makueni</option>
+                    <option value='Mandera'>Mandera</option>
+                    <option value='Marsabit'>Marsabit</option>
+                    <option value='Meru'>Meru</option>
+                    <option value='Migori'>Migori</option>
+                    <option value='Mombasa'>Mombasa</option>
+                    <option value='Muranga'>Murang'a</option>
+                    <option value='Nairobi City'>Nairobi</option>
+                    <option value='Nakuru'>Nakuru</option>
+                    <option value='Nandi'>Nandi</option>
+                    <option value='Narok'>Narok</option>
+                    <option value='Nyamira'>Nyamira</option>
+                    <option value='Nyandarua'>Nyandarua</option>
+                    <option value='Nyeri'>Nyeri</option>
+                    <option value='Samburu'>Samburu</option>
+                    <option value='Siaya'>Siaya</option>
+                    <option value='Taita-Taveta'>Taita-Taveta</option>
+                    <option value='Tana River'>Tana River</option>
+                    <option value='Tharaka-Nithi'>Tharaka-Nithi</option>
+                    <option value='Trans Nzoia'>Trans Nzoia</option>
+                    <option value='Turkana'>Turkana</option>
+                    <option value='Uasin Gishu'>Uasin Gishu</option>
+                    <option value='Vihiga'>Vihiga</option>
+                    <option value='West Pokot'>West Pokot</option>
+                    <option value='wajir'>wajir</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="town">Town</label>
+                <input type="text" name="town" id="town" value="{{ town }}" class="form-control" value="" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="building">Building:</label>
+                <input type="text" name="building" id=" " value="{{ building }}" class="form-control" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="supervisor">Industrial supervisor:</label>
+            <input type="text" name="supervisor" id=" " value="{{ supervisor }}" class="form-control" required>
+            </div>
+        </div>      
         <input type="hidden" name="student" value="{{ request.user }}">
-        <button type="submit" class="rounded-btn col-lg-6 col-md-4 col-lg-offset-3" style="border-radius: 25px;">
+        <button type="submit" class="rounded-btn col-md-4 offset-md-3" id="form-btn" style="border-radius: 25px;">
             <i class="fa fa-upload"></i>
             Submit details
         </button>
     </form>
+    <script src="{% static 'main.js' %}"></script>
+    <script>
+    $(document).ready(function () {
+        // set date
+        $('#date').val("{{ start | date:'Y-m-d' }}");
+        
+        var org = "{{ org }}"
+        if(org !== undefined && org != null && org !== ''){
+            $('input').attr('readonly',true);
+            $('select').attr('readonly', true);
+            $('#form-btn').hide()
+        }
+
+        $('#edit').click(function (e) { 
+            e.preventDefault();
+            $('input').attr('readonly',false);
+            $('select').attr('readonly', false);
+            $('form button').show(600);
+        });
+    });
+    </script>
 {% endblock content %}

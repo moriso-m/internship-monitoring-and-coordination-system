@@ -5,11 +5,15 @@
 
 {% block content %}
 
-{% if account_created %}
-  <div class="alert alert-success">
-    <a href="#" class="close" data-dismiss="alert">&times;</a>
-    {{ account_created }}
-</div>
+{% if messages %}
+    <ul class="messages list-unstyled mt-2">
+        {% for message in messages %}
+        <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
 {% endif %}
   
 

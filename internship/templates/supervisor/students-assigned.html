@@ -1,0 +1,111 @@
+{% extends 'supervisor/base.html' %}
+{% load static %}
+
+{% block title %}
+    Students assigned
+{% endblock title %}
+
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'supervisorIndex' %}">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Students assigned</li>
+    </ul>
+
+    <table class="table table-hover table-bordered table-striped" id="students">
+        <thead>
+            <tr>
+                <th>Admission no.</th>
+                <th>Student's Name</th>
+                <th>Course</th>
+                <th>Organization</th>
+                <th>Action <i class="fa fa-cog"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.student.adm }}</td>
+                    <td>{{ student.student.full_name }}</td>
+                    <td>{{ student.student.course_code }}</td>
+                    <td>
+                        <a href="" class="badge badge-success" 
+                            data-id="{{ student.student.adm }}" data-toggle="modal" data-target="#organization-modal"
+                            onclick="var id = this.getAttribute('data-id'); organization_details(id)">
+                            Organization details
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'studentLogbook' student.student.adm %}" 
+                            class="badge badge-dark">Logbook</a>
+                        <a href="" class="badge badge-warning">Message</a>
+                        <a href="" class="badge badge-success"></a>
+                    </td>
+                </tr>
+            {% endfor %}
+                
+        </tbody>
+    </table>
+    <div class="modal fade" id="organization-modal" tabindex="-1" role="dialog" aria-labelledby="status" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-dark">
+                    <h5 class="modal-title" id="exampleModalLabel">Organization info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Name: &nbsp;&nbsp;&nbsp;<b id="name" class="badge badge-success"> </b> 
+                    Adm no.&nbsp;&nbsp;&nbsp;<b id="adm" class="badge badge-success"></b><br>
+                    Organization:&nbsp;&nbsp;&nbsp;<b id="org"></b><br>
+                    County:&nbsp;&nbsp;&nbsp;<b id="county"></b><br>
+                    Town:&nbsp;&nbsp;&nbsp;<b id="town"></b><br>
+                    Building:&nbsp;&nbsp;&nbsp;<b id="building"></b>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready( function () {
+            $('#students').DataTable();
+        });
+    </script>
+    <script>
+        function organization_details(id){
+            // get JSON returned passed from django context, already in json format
+            var d = "{{ organization | safe }}"
+
+            // obtain keys in the JSON containing organization details for each student
+            for (const key in d) {
+                if (d.hasOwnProperty(key)) {
+                    const adm = d[key].adm;
+
+                    // fetch details for appropriate student
+                    if (adm == id) {
+                        $('#name').text(d[key].name);
+                        $('#adm').text(d[key].adm);
+                        $('#org').text(d[key].organization);
+                        $('#county').text(d[key].county);
+                        $('#town').text(d[key].town);
+                        $('#building').text(d[key].building);
+                        break;
+                    }
+                    else{
+                        $('#name').text('');
+                        $('#adm').text(id);
+                        $('#org').text('null');
+                        $('#county').text('null');
+                        $('#town').text('null');
+                        $('#building').text('null');
+                    }
+                }
+            }
+        }
+    </script>
+        
+{% endblock content %}
+    

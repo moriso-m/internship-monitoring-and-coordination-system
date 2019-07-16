@@ -5,7 +5,6 @@
 
 {% block content %}
     <div class="row">
-                {% regroup logbook by date as allDetails %}
                 {% regroup logbook by week as week %}
         
                 {% for week in week %}
@@ -20,14 +19,10 @@
                             <tbody>
 
                     
-                            {% for detail in allDetails %}
+                            {% for task in week.list %}
                                 <tr>
-                                    <td  class="tdata">{{ detail.grouper }}</td>
-                                    <td  class="tdata">
-                                        {% for work in detail.list %}
-                                            {{ work.work_done | linebreaks}}
-                                        {% endfor %}
-                                    </td>
+                                    <td  class="tdata">{{ task.date | date:"D" }}<br>{{ task.date }}</td>
+                                    <td  class="tdata">{{ task.work_done | linebreaks }} </td>
                                 </tr>
                             {% endfor %}
             

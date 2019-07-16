@@ -48,19 +48,19 @@ class RegisterForm(forms.ModelForm):
         
 
 class ApplicationForm(forms.ModelForm):
-    organization = forms.CharField(label='Organization', max_length=50, required=True ,
+    organization = forms.CharField(label='Organization:', max_length=50, required=True ,
                                 widget= forms.TextInput(
-                                    attrs={'class':'form-control col-lg-4',
+                                    attrs={'class':'form-control col-md-8 offset-md-2',
                                            'placeholder':'Organization ...'}
                                 ))
-    PO_BOX = forms.CharField(label='P.O BOX', max_length=50, required=False ,
+    PO_BOX = forms.CharField(label='P.O BOX:', max_length=50, required=False ,
                                 widget= forms.TextInput(
-                                    attrs={'class':'form-control col-lg-4 ',
+                                    attrs={'class':'form-control col-md-8 offset-md-2',
                                            'placeholder':'p.o box ...'}
                                 ))
-    branch = forms.CharField(label='Organization`s Branch / Location', max_length=50, required=True ,
+    branch = forms.CharField(label='Organization`s Branch / Location:', max_length=50, required=True ,
                                 widget= forms.TextInput(
-                                    attrs={'class':'form-control col-lg-4 ',
+                                    attrs={'class':'form-control col-lg-8 offset-md-2',
                                            'placeholder':'branch ...'}
                                 ))
     
@@ -85,12 +85,12 @@ class UpdateStatusForm(forms.ModelForm):
         fields = ['status']
 
 class LogbookForm(forms.ModelForm):
-    work_done = forms.CharField(label='Work done today', required=True ,
+    work_done = forms.CharField(label='Work done today:', required=True ,
                                 widget= forms.Textarea(
-                                    attrs={'class':'form-control col-lg-4',
+                                    attrs={'class':'form-control col-lg-12',
                                            'placeholder':'Tasks done ...',
                                            'rows' : '5',
-                                           'columns' : '6'
+                                           'columns' : '10'
                                         }
                                 ))
     # date = forms.DateField(widget= forms.DateInput(
@@ -98,9 +98,9 @@ class LogbookForm(forms.ModelForm):
     #                                     'placeholder':'Date ...'
     #                                 }
     #                         ))
-    week = forms.CharField(widget= forms.TextInput(
-                            attrs={'class':'form-control col-lg-4 ',
-                                    'placeholder':'Week in numbers'
+    week = forms.CharField(label="Week:",widget= forms.TextInput(
+                            attrs={'class':'form-control col-md-6 offset-md-3',
+                                    'placeholder':'Week in digit format'
                                 }
                         ))
     class Meta:
@@ -109,7 +109,7 @@ class LogbookForm(forms.ModelForm):
 
 
 class OrganizationForm(forms.ModelForm):
-    
+
     class Meta:
         model = Organization
         fields = '__all__'
@@ -127,7 +127,7 @@ class NotificationForm(forms.ModelForm):
     
     class Meta:
         model = Notification
-        fields ="__all__"
+        fields =["content"]
 
 
 class AllocateSupervisorForm(forms.ModelForm):

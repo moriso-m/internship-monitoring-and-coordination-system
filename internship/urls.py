@@ -18,6 +18,7 @@ urlpatterns = [
     path('student/logbook-guidelines', views.LogbookGuidelines.as_view(), name='logbookGuidelines'),
     path('student/final-report', views.FinalReportGuidelines.as_view(), name='finalReport'),
     path('student/organization', views.OrganizationView.as_view(), name='organization'),
+    path('student/notification', views.StudentNotification.as_view(), name='notification'),
     
     # coordinator routes
     path("coordinator/", views.CoordinatorView.as_view(), name="coordinatorIndex"),
@@ -29,4 +30,12 @@ urlpatterns = [
     path("coordinator/allocated-supervisors", views.AllocatedSupervisorsView.as_view(), name="allocatedSupervisors"),
     path("coordinator/allocate-supervisor", views.AllocateSupervisorView.as_view(), name="allocateSupervisor"),
   
+  
+    # supervisor routes
+    path("supervisor/", views.SupervisorView.as_view(), name="supervisorIndex"),
+    path("supervisor/logbooks", views.Logbooks.as_view(), name="logbooks"),
+    path("supervisor/student-logbook/<path:adm>", views.StudentLogbook.as_view(), name="studentLogbook"),
+    path("supervisor/student-logbook-pdf/<path:adm>", views.LogbookPDF_supervisor.as_view(), name="studentLogbookPdf"),
+    path("supervisor/send-message", views.SendMessage_supervisor.as_view(), name="sendMessage"),
+
 ]

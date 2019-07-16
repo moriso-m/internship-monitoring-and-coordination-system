@@ -4,9 +4,29 @@
 <head>
     <title>{% block title%}{% endblock%}</title>
     <style type="text/css">
+        @page {
+            size: letter portrait;
+            @frame header_frame {           /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+            }
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+            }
+        }
         body {
             font-weight: 200;
             font-size: 14px;
+        }
+        img{
+            width: 500px;
+            margin-top:50px;
+            position: absolute;
+            right: 50%;
         }
         .header {
             font-size: 20px;
@@ -44,27 +64,46 @@
         table{
             border: 1px solid black;
         }
+        tr{
+            min-height: 80px;
+        }
         .thead{
             padding-top: 5px;
         }
         .tdata{
             padding: 5px 0px 0px 5px;
         }
+        h2,h1{
+            margin-top: 80px;
+            text-align:center;
+        }
+        #period{
+            font-size: 2.6em;
+        }
     </style>
 </head>
     <body>
-        <div class='wrapper'>
+        <!-- Content for Static Frame 'footer_frame' -->
+        <div id="footer_content">
+            page <pdf:pagenumber> of <pdf:pagecount>
+        </div>
+        <div class='wrapper' >
             <div class="uoeld-header">
                 <img src="C:\Users\moriso\Desktop\temp\SCHOOL PROJECTS\internship_system\internship\static\images\uoelogo.png" alt="uoeld" />
-                <ul class="address">
+                <!-- <ul class="address">
                     <li>P.O BOX 1125-30100 ELDORET KENYA</li>
                     <li>TEL +254-532063111, FAX: +254-532063257</li>
                     <li>Email:vc@uoeld.ac.ke ~ web:www.uoeld.ac.ke</li>
-                </ul>
+                </ul> -->
             </div>
-            <div class='header'>
-                <p class='title'>Logbook</p>
-            </div>
+            <h1>UNIVERSITY OF ELDORET</h1>
+            <h2>SCHOOL OF SCIENCE</h2>
+            <h2>DEPARTMENT OF MATHEMATICS & COMPUTER SCIENCE</h2>
+            <h1 style="padding-top:20px;font-size: 2.4em; margin-top:150px;
+                border-bottom: 8px solid black;border-top: 8px solid black;">
+                INDUSTRIAL ATTACHMENT LOGBOOK 
+            </h1>
+            <h2 id="period" style="margin-top:80px">MAY 2019</h2>
             <div>
                 <p><b>Adm Number: </b>{{ student.adm }}</p>
                 <p><b>Student Name: </b>{{ student.full_name }}</p>
@@ -72,9 +111,74 @@
                 <p><b>Organization: </b></p>
                 <p><b>University supervisor: </b></p>
             </div>
+            <div class="guidelines">
+                <h1>INDUSTRIAL ATTACHMENT BRIEF TO STUDENTS</h1>
+                <h3>What is industrial attachment?</h3>
+                This is an academic/industrial experience in which students are attached to a potential employer in the area of Computer Science, Information Technology or Informatics for a maximum of 12 weeks.  Each student will be assigned University supervisor and an industrial supervisor upon commencement of the attachment.  Each student should communicate regularly with the university supervisor and the industrial supervisor should also periodically review his or her work.
+                
+                Each student must keep a weekly report of activities.  This will be submitted as a periodic progress report and may also be used to write the final report.
+                
+                Students on attachment are encouraged where possible to supplement their work experience with research in a related area.  This will provide a greater understanding of their work assignments and/or additional insights for preparing the final attachment report.
+                
+                <h3>How much credit is earned?</h3>
+                An equivalent of 6 units is earned.
+                
+                <h3>How to prepare the weekly reports</h3>
+                At the end of each day of work take a few minutes to record a summary of the day’s activities and experience.  Examples are provided below
+                <ul>
+                    <li>Work done</li>
+                    <li>Software/hardware used</li>
+                    <li>Who you interacted with</li>
+                    <li>Problem encountered</li>
+                    <li>Opportunities encountered</li>
+                    <li>Reflections on your strengths, weakness, likes, or dislikes</li>
+                    <li>Research done</li>	
+                </ul>
+                The weekly report should be spiral bonded together with the report and 
+                submitted first week of September to your University supervisor after approval by your industrial supervisor.  
+                <br>
+                <div style="margin-bottom: 80px;">Weekly report Record is shown here below:</div>
+            </div>            
             {% block content %}
             
             {% endblock %}
+            <h2 class="text-center">THE FINAL REPORT</h2>
+            This is the final report on the attachment. 
+            Students should as much as possible submit preliminary reports to both supervisors 
+            in order to get feed back on content and format and other elements such as grammar 
+            and style.  These four are emphasized in assessment of the final report.
+            Although supervisors may or may not adopt all the elements
+            the general format below should be used for the final report:
+            <ol>
+                <li>Title</li>
+                <li>Acknowledgements</li>
+                <li>Company organization chart</li>
+                <li>Department/sections you work in and your responsibilities</li>
+                <li>Report on:
+                    <ol type="a" style="list-style-type: lower-alpha;">
+                        <li>Attachment activities and experience</li>
+                        <li>Interaction with staff in the company</li>
+                        <li>Problems and opportunities</li>
+                        <li>Computer Science/ICT/Informatics background</li>
+                        <li>Your strength and weakness</li>
+                    </ol>
+                </li>
+                <li>Conclusions, Recommendations, and Future learning</li>
+                <li>Appendices:
+                    <ul>
+                        <li>Your work schedule</li>
+                        <li>Correspondence</li>
+                        <li>Samples of work done.</li>
+                    </ul>
+                </li>
+            </ol>
+            <h2>VISIT BY THE UNIVERSITY SUPERVISOR</h2>
+            <p>The university supervisor will visit every student under his or her 
+                supervision at least once to assess the student's performance. 
+                The schedule of the visit will be communicated to all students by 
+                respective university supervisor at least one week before such visit.
+            </p>
         </div>
+
     </body>
 </html>

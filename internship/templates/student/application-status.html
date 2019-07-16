@@ -8,17 +8,16 @@
 {% endblock title %}
     
 {% block content %}
-    <div class="table-responsive-vertical">
-        <table class="table  table-bordered table-striped table-hover">
-             <caption>Applications</caption>
-             <thead>
-             <tr>
-                 <th>No.</th>
-                 <th>Organization</th>
-                 <th>Branch</th>
-                 <th>Status</th>
-             </tr>
-             </thead>
+    <div>
+        <table class="table  table-bordered table-striped table-hover" id="applications">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Organization</th>
+                    <th>Branch</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
              <tbody>
              {% for application in applications%}
                  <tr>
@@ -26,7 +25,7 @@
                      <td data-title="">{{ application.organization }}</td>
                      <td data-title="">{{ application.branch }}</td>
                      <td data-title="">
-                         <button class="btn btn-warning btn-sm">{{ application.status }}</button>
+                         <a class="badge badge-info">{{ application.status }}</a>
                     </td>
                  </tr>
              {% endfor%}
@@ -35,5 +34,10 @@
              </tfoot>
         </table>
     </div>
+    <script>
+    $(document).ready( function () {
+        $('#applications').DataTable();
+    });
+</script>
 {% endblock content %}
     

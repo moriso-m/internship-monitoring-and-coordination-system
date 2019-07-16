@@ -6,65 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title> {% block title%} {%endblock %} </title>
-    <link rel="stylesheet" href="{%  static 'bootstrap-3.3.6\css\bootstrap.min.css' %}">
-    <!-- <link rel="stylesheet" href="{%  static 'bootstrap-4.0.0\css\bootstrap.min.css' %}"> -->
-    <link rel="stylesheet" href="{%  static 'Font-Awesome-master\css\font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{%  static 'main.css' %}">
+    <!-- <link rel="stylesheet" href="{%  static 'bootstrap-3.3.6\css\bootstrap.min.css' %}"> -->
+    <link rel="stylesheet" href="{%  static 'bootstrap-4.0.0\css\bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{%  static 'Font-Awesome-master\css\font-awesome.min.css' %}">
+	<!-- data tables css -->
+	<link rel="stylesheet" href="{% static 'datatables\DataTables-1.10.18\css\dataTables.bootstrap4.min.css' %}">
+	<!-- <link rel="stylesheet" href="{% static 'datatables\datatables.min.css' %}"> -->
+	
+	<link rel="stylesheet" href="{%  static 'main.css' %}">
 
-	<script src="{%  static 'jquery-3.2.1.min.js' %}"></script>
-    <script src="{%  static 'bootstrap-3.3.6\js\bootstrap.min.js' %}"></script>
-    <!-- <script src="{%  static 'bootstrap-4.4.0\js\bootstrap.min.js' %}"></script> -->
+	<script src="{%  static 'jquery-3.3.1.min.js' %}"></script>
+	<script src="{%  static 'bootstrap-4.0.0\js\bootstrap.min.js' %}"></script>
+
+	<!-- data tables -->
+    <!-- <script src="{%  static 'datatables\datatables.min.js' %}"></script> -->
+    <script src="{%  static 'datatables\jquery.dataTables.js' %}"></script>
+    <script src="{%  static 'datatables\DataTables-1.10.18\js\dataTables.bootstrap4.min.js' %}"></script>
 </head>
 <body class="">
     <header>
 		<img src=" {% static 'images/logo-2.png' %}" alt="WICS"> 
 		<p><em>The ultimate internship manager</em></p>
     </header>
-    <nav class="navbar navbar-default" id="mainNav">
+	<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
 		<div class="navbar-header">
 			<!--collapsable navbar-->
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
+			<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar">
+                <span class="navbar-toggler-icon"></span>
 			</button>
 			<a href="{% url 'index' %}" class="navbar-brand" style="color:#ffffff;">
-				Field Attachment Monitoring and Coordinaton System
+				FAMOS
 			</a>
 		</div>
-		<div class="collapse navbar-collapse" id="myNavbar">
-			<ul class="nav navbar-nav">
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-                <li>
-					<a href="">
-						<i class="fa fa-question fa-2x"></i>
+		<div class="collapse navbar-collapse " id="myNavbar">
+			<ul class="nav navbar-nav ml-auto" >
+                <li class="nav-item justify-content-end">
+                    <a href="{% url 'notification' %}" class="nav-link">
+                        <i class="fa fa-bell fa-2x" style="color:#001a33; "></i>
+                    </a>
+                </li>
+                <li class="nav-item justify-content-end">
+                    <a href="" class="nav-link">
+                        <i class="fa fa-home fa-2x" style="color:#001a33; "></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+					<a href="" class="nav-link">
+                        <i class="fa fa-question-circle fa-2x" style="color:#001a33; "></i>
 					</a>
 				</li>
-				<li>
-					<a id="application-btn" class="rounded-btn" href="{% url 'applicationStatus' %}">
+				<!-- <li class="nav-item" >
+					<a id="application-btn" class="rounded-btn justify-content-around" href="{% url 'applicationStatus' %}">
 						<i class="fa fa-eye"></i>
 						View applications
 					</a>
-				</li>
+				</li> -->
 				<li>
 					<!-- <a href="">
 						<i class="fa fa-bell fa-2x"></i>
 					</a> -->
 				</li>
-				<li>
-					<a href="{% url 'logout' %}">Logout</a>
+				<li class="nav-item">
+					<a href="{% url 'logout' %}" class="nav-link">Logout</a>
 				</li>
                 <li>
 					<a href=" {% url 'login' %}">
 							<img src="{% static 'images/student.png' %}" alt="" height="35">
 					</a>
-				</li>
+                </li>
 			</ul>
 		</div>
     </nav>
    <div class="row">
-	   <div class="dashboard col-lg-3 col-md-3 bg-success" id="dashboard">
+	   <div class="dashboard col-lg-3 col-md-3" id="dashboard">
 			<div class="avatar">
 				<img src="{% static 'images/student.png'%}" class=" img-circle img-responsive" alt="avatar">
 				<div class="text">
@@ -111,7 +125,7 @@
 				</li>
 		   </ul>
 	   </div>
-	   <div class="col-lg-9 col-md-9" style="background: rgba(153, 204, 255,0.12);min-height:80vh;margin-top:-20px;">
+	   <div class="col-lg-9 col-md-9" style="min-height:80vh;">
 			{% block content %}
 		
 			{% endblock content %}
