@@ -1,0 +1,39 @@
+{% extends 'coordinator/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Coordinator 
+{% endblock title %}
+    
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'coordinatorIndex' %}">Home</a></li>
+        <li class="active breadcrumb-item"><i class="fa fa-comment"></i></li>
+    </ul>
+    <div class="new-msg">
+        <i class="fa fa-plus-circle fa-4x"></i>
+    </div>
+    <div class="row">
+        {% regroup messages by student as per_student %}
+        {% for std in messages %}
+            <a href="{% url 'refreshChats' std.student.adm %}" class="msg-link col-md-12">
+                <span class="sender ml-4">{{ std.student }}</span><br>
+                <img src="{% static 'images/student.png' %}" alt="" class="img-responsive img-circle" height="30" width="30">
+                <span>{{ std.message_content }} </span><br>
+                <div class="time pull-right mb-0">{{ std.sent_on }}</div>
+            </a>
+        {% endfor %}
+            
+
+        <a href="" class="msg-link col-md-12">
+            <span class="sender ml-4">Sender</span><br>
+            <img src="{% static 'images/coordinator.png' %}" alt="" class="img-responsive img-circle" height="30" width="30">
+            <span>COntent goes here COntent goes here COntent goes here COntent goes here </span><br>
+            <div class="time pull-right mb-0">21 July 2019 10.34am</div>
+        </a>
+
+
+    </div>
+{% endblock %}

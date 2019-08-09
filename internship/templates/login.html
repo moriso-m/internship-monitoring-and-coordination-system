@@ -9,10 +9,10 @@
     
 
 {% block formFields %}
-    <h3 class="text-center">
+    <h4 class="text-center">
         <img src="{% static 'images/lock.png' %}" alt="" width="35" height="20">
         Login
-    </h3>
+    </h4>
     {% if errors %}
         <p style="color: #a94442;">{{ errors }}</p>
     {% endif %}
@@ -22,18 +22,15 @@
             has-error has-feedback
         {% endif %}
             ">
-            <label class="control-label col-lg-12">{{ field.label }}</label>
+            <label class="">{{ field.label }}</label>
             {{ field }}
             
-        </div><br>
+        </div>
     {% endfor %}
-    <div class="col-lg-12 col-md-12"></div><br>
-    <div class="form-group" >
-        <button class="rounded-btn col-lg-6 col-md-6 col-lg-offset-3" type="submit" style="margin-top: 10px;">
+        <button class="rounded-btn col-md-6 offset-md-3" type="submit">
             <i class="fa fa-lock"></i>
             Login
         </button>
-    </div>  
     <div class="col-lg-12 col-md-12">
         <p>Do not have an account? <a href="{% url 'register' %}">Register</a></p>
         <p> <a href="{% url 'register' %}">Forgot password</a></p>

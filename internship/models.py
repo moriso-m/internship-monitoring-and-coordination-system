@@ -108,13 +108,26 @@ class Logbook(models.Model):
     
     
 class Message(models.Model):
-    sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE)
-    recipient = models.ForeignKey(User, related_name='recipient', on_delete=models.CASCADE)
+    student = models.ForeignKey(Student,null=True, blank=True, on_delete=models.CASCADE)
+    coordinator = models.ForeignKey(Coordinator,blank=True,null=True, on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(Supervisor,blank=True, null=True,  on_delete=models.CASCADE)
     message_content = models.TextField()
+    outgoing = models.BooleanField(default=False)
     sent_on = models.DateTimeField(auto_now=True)
     read_status = models.BooleanField(default=False)
-    
-    
+ 
+    # to enable convertion to Json
+    # def as_dict(self):
+    #     return {
+    #         'student' : self.student,
+    #         'coordinator' : self.coordinator,
+    #         'supervisor' : self.supervisor,
+    #         'message_content' : self.message_content,
+    #         'sent_on' : self.sent_on,
+    #         'read_status': self.read_status
+    #     }
+        
+        
 class Notification(models.Model):
     content = models.TextField()
     date = models.DateTimeField(auto_now=True)

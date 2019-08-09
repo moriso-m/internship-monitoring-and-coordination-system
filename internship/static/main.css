@@ -315,3 +315,108 @@ footer{
     bottom: 5px;
 
 }
+
+
+/* messages */
+.msg-link{
+    text-decoration: none;
+    color: #333;
+    border-bottom: 1px dotted;
+    cursor: pointer;
+}
+.msg-link .sender{
+    font-style: italic;
+    font-size: 0.88em;
+    font-weight: bold;
+}
+.msg-link:hover{
+    text-decoration: none;
+    background: #ddd;
+    color: #01000a;
+}
+.msg-link .time{
+    font-style: italic;
+    font-size: 0.55em;
+}
+
+.msg-indicator{
+    position: absolute;
+    top: 12px;
+    left: 42px;
+}
+.msg-indicator-nav{
+    position: absolute;
+    top: 4px;
+    left: 30px;
+}
+
+.new-msg{
+    position: fixed;
+    top: 500px;
+    right:30px;
+}
+.writers-side, .senders-side{
+    position: relative;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	min-width: 150px;
+	min-height: 50px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	line-height: 26px;
+    padding: 2px 8px;
+}
+.senders-side{
+	background:rgba(191, 191, 191,0.2);
+	margin-right: 30px;
+}
+.writers-side {
+    background: rgba(153, 204, 255, 0.4);
+    color: #000066;
+}
+.writers-side:hover{
+	background: rgba(153, 204, 255, 0.7);
+}
+.senders-side:hover{
+	background:rgba(191, 191, 191,0.5);
+}
+#input-text{
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    margin:5px auto;
+}
+#input-text input{
+    width: 70%;
+    height: 60px;
+}
+#send-button{
+    cursor: pointer;
+    color: #444;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.writers-side .time,.senders-side .time{
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+    font-style: italic;
+    font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
+    font-size: 0.8em;
+}
+.personal-messages .senders-side i,.personal-messages .writers-side i{
+	position: absolute;
+	top: 50%;
+	color:#ff3333;
+	display: none;
+}
+.writers-side i {
+	left: -30px;
+}
+.senders-side i{
+	right: -20px;
+}

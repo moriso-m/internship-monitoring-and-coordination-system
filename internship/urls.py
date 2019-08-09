@@ -7,6 +7,8 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', views.Logout.as_view(), name='logout'),
     path("register/", views.Register.as_view(), name="register"),
+    path("help/", views.Help.as_view(), name="help"),
+    path("about/", views.About.as_view(), name="about"),
     
     # student routes
     path('student/', views.StudentView.as_view(), name='studentIndex'),
@@ -29,6 +31,9 @@ urlpatterns = [
     path("coordinator/send-notification", views.sendNotificationView.as_view(), name="sendNotification"),
     path("coordinator/allocated-supervisors", views.AllocatedSupervisorsView.as_view(), name="allocatedSupervisors"),
     path("coordinator/allocate-supervisor", views.AllocateSupervisorView.as_view(), name="allocateSupervisor"),
+    path("coordinator/messages", views.MessagesCoordinator.as_view(), name="messages"),
+    path("coordinator/send-message", views.SendMessage.as_view(), name="sendMessage"),
+    path("coordinator/refresh-chats/<path:adm>", views.RefreshChatsCoordinator.as_view(), name="refreshChats"),
   
   
     # supervisor routes

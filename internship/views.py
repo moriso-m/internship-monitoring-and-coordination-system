@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.views import View
 from django.db.models import Q
-from .models import Student, Coordinator, Course, Department, Application,Organization, Logbook, AcademicYear, AllocatedSupervisor, Notification, Supervisor
+from .models import Student, Coordinator, Course, Department, Message, Application,Organization, Logbook, AcademicYear, AllocatedSupervisor, Notification, Supervisor
 from . import forms
 # import utils for creating pdf
 from .utils import render_to_pdf
@@ -133,6 +133,21 @@ class Register(View):
             }
             return render(request, self.template, context)
         
+        
+class Help(View):
+    template = 'help.html'
+    
+    def get(self,request):
+        return render(request, self.template)
+        
+        
+class About(View):
+    template = 'about.html'
+    
+    def get(self,request):
+        return render(request, self.template)
+        
+        
 class StudentView(LoginRequiredMixin, UserPassesTestMixin, View):
     template = 'student/index.html'
     def test_func(self):
@@ -196,7 +211,7 @@ class ApplicationStatus(LoginRequiredMixin, UserPassesTestMixin, View):
         student =Student.objects.get(adm=user)
         applications = Application.objects.filter(student= student)
         return render(request, self.template, {'applications' : applications })
-        
+         
     
 # fill logbook view
 class FillLogbook(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -211,20 +226,45 @@ class FillLogbook(LoginRequiredMixin, UserPassesTestMixin, View):
         user = self.request.user
         return Student.objects.filter(adm=user).exists()
     
+    date = datetime.date.today()
     def get(self, request):
-        return render(request, self.template, { 'form':self.form})
+        check = Logbook.objects.filter(date=self.date).exists()
+        print(check)
+        if not check:
+            context ={
+                'form': self.form
+            }
+        else:
+            exists = 'Hey '+str(request.user)+'! You have already filled today`s work. Click update button to update details'
+            context ={
+                'form':self.form,
+                'details': Logbook.objects.get(date=self.date),
+                'entry_exists': exists,
+            }
+        
+        return render(request, self.template, context)
     
     def post(self, request):
         form = self.form(request.POST)
+        student = Student.objects.get(adm=request.user)
         if form.is_valid():
-            student = Student.objects.get(adm=request.user)
-            instance = form.save(commit=False)
-            instance.student = student
-            instance.save()
-            context ={
-                    'form' : self.form(None),
-                    'success' :  'details successfully filled in your logbook'
-            }
+            check = Logbook.objects.filter(date=self.date).exists()
+            if not check:
+                instance = form.save(commit=False)
+                instance.student = student
+                instance.save()
+                context ={
+                        'form' : self.form(None),
+                        'success' :  'details successfully filled in your logbook'
+                }
+            else:
+                a = Logbook.objects.get(pk=request.POST['id'])
+                form = self.form(request.POST, instance=a)
+                form.save(commit=False)
+                form.student = student
+                form.save()
+                messages.success(request,'Activities successfully updated \U0001F44F \U0001F44F')
+                return redirect('logbook')
         else:
             print(self.form(request.POST))
             context = {
@@ -400,7 +440,18 @@ class StudentNotification(LoginRequiredMixin,UserPassesTestMixin, View):
         notifications = Notification.objects.filter(department=course.department)
 
         return render(request, self.template,  {'notifications': notifications})
+    
+    
     # coordinator views
+def unread_messages(user):
+    coordinator = Coordinator.objects.get(staff_no=user)
+    print(coordinator)
+    unread_msg = Message.objects.filter(coordinator=coordinator).filter(outgoing=False).filter(read_status=False).count()
+    if unread_msg==0:
+        unread_msg=''
+    return unread_msg
+        
+        
 class CoordinatorView(LoginRequiredMixin, UserPassesTestMixin, View):
     login_url = settings.LOGIN_URL
     redirect_field_name = 'redirect_to'
@@ -412,6 +463,7 @@ class CoordinatorView(LoginRequiredMixin, UserPassesTestMixin, View):
         return Coordinator.objects.filter(staff_no=user).exists()
 
     def get(self, request):
+        unread_msg = unread_messages(request.user)
         year = datetime.date.year
         current_year = AcademicYear.objects.get(active=True)
         allocated_supervisors = AllocatedSupervisor.objects.all()
@@ -422,6 +474,7 @@ class CoordinatorView(LoginRequiredMixin, UserPassesTestMixin, View):
             'supervisors': allocated_supervisors,
             'pending' : pending_applications,
             'seen': seen_applications,
+            'unread_msg': unread_msg,
         }
         return render(request, self.template, context)
   
@@ -446,10 +499,12 @@ class CoordinatorApplications(LoginRequiredMixin, UserPassesTestMixin, View):
         
     def get(self, request):
         user = self.request.user
+        unread_msg = unread_messages(request.user)
         applications = Application.objects.all()
         context = {
             'form': self.form,
-            'applications': applications
+            'applications': applications,
+            'unread_msg':unread_msg
         }
         return render(request, self.template, context)
     
@@ -486,6 +541,7 @@ class UpdateStatus(LoginRequiredMixin, UserPassesTestMixin, View):
         return coordinator(self.request)
         
     def get(self, request):
+        unread_msg = unread_messages(request.user)
         applications = Application.objects.all()
         # status
         form = self.form,
@@ -500,7 +556,8 @@ class UpdateStatus(LoginRequiredMixin, UserPassesTestMixin, View):
             'pending' : pending,
             'awaiting' : awaiting,
             'failed' : failed,
-            'success' : success
+            'success' : success,
+            'unread_msg':unread_msg
         }
         return render(request, self.template, context)
     
@@ -569,11 +626,12 @@ class StudentList(LoginRequiredMixin, UserPassesTestMixin, View):
         return coordinator(self.request)
     
     def get(self, request):
+        unread_msg = unread_messages(request.user)
         user = self.request.user
         # user=User.objects.get(username=user).values_list('username')
         students = studentsInDepartment(user,'student_list')
             
-        return render(request,self.template, {'students':students})
+        return render(request,self.template, {'students':students,'unread_msg':unread_msg})
 
 
 class NotificationView(LoginRequiredMixin, UserPassesTestMixin, View):
@@ -584,11 +642,12 @@ class NotificationView(LoginRequiredMixin, UserPassesTestMixin, View):
         return coordinator(self.request)
     
     def get(self, request):
+        unread_msg = unread_messages(request.user)
         notification_list = Notification.objects.all().order_by('-date')
         paginator = Paginator(notification_list, 6) # Show 25 contacts per page
         page = request.GET.get('page')
         notifications = paginator.get_page(page)
-        return render(request, self.template, {'notifications': notifications})
+        return render(request, self.template, {'notifications': notifications,'unread_msg':unread_msg})
     
     def post(self, request):
         form = self.form(request.POST or None)
@@ -630,6 +689,7 @@ class AllocatedSupervisorsView(LoginRequiredMixin, UserPassesTestMixin, View):
         return coordinator(self.request)
     
     def get(self, request):
+        unread_msg = unread_messages(request.user)
         # get coordinators department
         user = request.user
         department = Coordinator.objects.get(staff_no=user)
@@ -638,7 +698,8 @@ class AllocatedSupervisorsView(LoginRequiredMixin, UserPassesTestMixin, View):
         print(allocated_supervisors)
         context = {
             'supervisors': allocated_supervisors,
-            'supervisors_list' : supervisors
+            'supervisors_list' : supervisors,
+            'unread_msg':unread_msg
         }
         return render(request, self.template, context)
     
@@ -672,6 +733,7 @@ class AllocateSupervisorView(LoginRequiredMixin, UserPassesTestMixin, View):
         return coordinator(self.request)
     
     def get(self, request):
+        unread_msg = unread_messages(request.user)
         user = self.request.user
         # get coordinator's department
         department = Coordinator.objects.get(staff_no=user)
@@ -683,7 +745,7 @@ class AllocateSupervisorView(LoginRequiredMixin, UserPassesTestMixin, View):
         
         supervisors = Supervisor.objects.filter(department=department.department)
         
-        return render(request,self.template, {'students': students,'supervisors_list' : supervisors})
+        return render(request,self.template, {'students': students,'supervisors_list' : supervisors,'unread_msg':unread_msg})
     
     def post(self,request):
         print (request.POST)
@@ -701,6 +763,87 @@ class AllocateSupervisorView(LoginRequiredMixin, UserPassesTestMixin, View):
         return redirect('allocatedSupervisors')
         
         
+class MessagesCoordinator(LoginRequiredMixin, UserPassesTestMixin, View):
+    login_url = 'settings.LOGIN_URL'
+    template = 'coordinator/messages.html'
+    # form = forms.StudentListForm
+    
+    def test_func(self):
+        return coordinator(self.request)
+    
+    def get(self, request):
+        unread_msg = unread_messages(request.user)
+        coordinator = Coordinator.objects.get(staff_no=request.user)
+        msg = Message.objects.filter(coordinator=coordinator).filter(read_status=False)
+        print(msg)
+        context = {
+            'messages' : msg,
+            'unread_msg':unread_msg
+        }
+        return render(request, self.template, context)
+        
+class SendMessage(LoginRequiredMixin,UserPassesTestMixin,View):
+    login_url = 'settings.LOGIN_URL'
+    
+    def test_func(self):
+        return coordinator(self.request)
+    
+    def get(self, request):
+        return None
+        
+    def post(self, request):
+        msg = request.POST['message']
+        student = Student.objects.get(adm=request.POST['student'])
+        coordinator = Coordinator.objects.get(staff_no=request.user)
+        print(msg)
+        new_msg = Message(student= student, coordinator=coordinator,message_content=msg,outgoing=True)
+        new_msg.save()
+    
+class RefreshChatsCoordinator(LoginRequiredMixin,UserPassesTestMixin, View):
+    login_url = 'settings.LOGIN_URL'
+    
+    def test_func(self):
+        return coordinator(self.request)
+    
+    def post(self, request,adm):
+        unread_msg = unread_messages(request.user)
+        messages = Message.objects.filter(student=adm)
+        # messages = JsonResponse(messages,safe=False)
+        data = {}
+        for msg in messages:
+            time = msg.sent_on
+            data[str(msg.id)] = {
+                'student' : msg.student.full_name,
+                'message_content' : msg.message_content,
+                'time' : time.strftime("%b %d %Y %H:%M"),
+                'outgoing': msg.outgoing
+            }
+        data = json.dumps(data)
+        return JsonResponse(data, safe=False)
+    
+    def get(self, request, adm):
+        student = Student.objects.get(adm=adm)
+        messages = Message.objects.filter(student=adm)
+        update_msg = Message.objects.filter(student=adm).filter(outgoing=False)
+        for msg in update_msg:
+            print(msg)
+            msg.read_status=True
+            msg.save()
+        unread_msg = unread_messages(request.user)
+        # messages = JsonResponse(messages,safe=False)
+        data = {}
+        for msg in messages:
+            time = msg.sent_on
+            data[str(msg.id)] = {
+                'student' : msg.student.full_name,
+                'message_content' : msg.message_content,
+                'time' : time.strftime("%b %d %Y %H:%M"),
+                'outgoing' : msg.outgoing
+            }
+        return render(request,'coordinator/message_per_person.html',{'messages': data,'student': student,'unread_msg':unread_msg})
+        
+        
+
 # supervisor views
 
 def supervisor(request):

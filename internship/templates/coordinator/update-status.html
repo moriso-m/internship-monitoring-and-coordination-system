@@ -21,19 +21,19 @@
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <a class="nav-item nav-link active" id="nav-pending-tab" data-toggle="tab" href="#nav-pending" role="tab" aria-controls="nav-pending" aria-selected="true">
             Pending 
-            <span class="badge badge-warning">{{ pending.count }}</span>
+            <span class="badge badge-warning badge-pill">{{ pending.count }}</span>
         </a>
         <a class="nav-item nav-link" id="nav-awaiting-tab" data-toggle="tab" href="#nav-awaiting" role="tab" aria-controls="nav-awaiting" aria-selected="false">
             awaiting 
-            <span class="badge badge-info">{{ awaiting.count }}</span>
+            <span class="badge badge-info badge-pill">{{ awaiting.count }}</span>
         </a>
         <a class="nav-item nav-link" id="nav-failed-tab" data-toggle="tab" href="#nav-failed" role="tab" aria-controls="nav-contact" aria-selected="false">
             Failed 
-            <span class="badge badge-danger">{{ failed.count }}</span>
+            <span class="badge badge-danger badge-pill">{{ failed.count }}</span>
         </a>
         <a class="nav-item nav-link" id="nav-successfull-tab" data-toggle="tab" href="#nav-successfull" role="tab" aria-controls="nav-contact" aria-selected="false">
             Successfull 
-            <span class="badge badge-success">{{ success.count }}</span>
+            <span class="badge badge-success badge-pill">{{ success.count }}</span>
         </a>
         </div>
     </nav>
@@ -42,10 +42,10 @@
            <table class="table table-striped table-hover" id="pending-table">
                <thead>
                    <tr>
-                       <td>No.</td>
-                       <td>Student</td>
-                       <td>Organization</td>
-                       <td>Action <i class="fa fa-cog "></i></td>
+                       <th>No.</th>
+                       <th>Student</th>
+                       <th>Organization</th>
+                       <th>Action <i class="fa fa-cog "></i></th>
                    </tr>
                </thead>
                <tbody>
@@ -67,13 +67,13 @@
            </table>
         </div>
         <div class="tab-pane fade" id="nav-awaiting" role="tabpanel" aria-labelledby="nav-profile-tab">
-            <table class="table table-striped" id="awaiting-table">
+                <table class="table table-striped table-hover" id="awaiting-table">
                 <thead>
                     <tr>
-                        <td>No.</td>
-                        <td>Student</td>
-                        <td>Organization</td>
-                        <td>Action <i class="fa fa-cog "></i></td>
+                        <th>No.</th>
+                        <th>Student</th>
+                        <th>Organization</th>
+                        <th>Action <i class="fa fa-cog "></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,10 +98,10 @@
             <table class="table table-striped" id="failed-table">
                 <thead>
                     <tr>
-                        <td>No.</td>
-                        <td>Student</td>
-                        <td>Organization</td>
-                        <td>Action <i class="fa fa-cog "></i></td>
+                        <th>No.</th>
+                        <th>Student</th>
+                        <th>Organization</th>
+                        <th>Action <i class="fa fa-cog "></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -126,10 +126,10 @@
             <table class="table table-striped table-hover" id="success-table">
                 <thead>
                     <tr>
-                        <td>No.</td>
-                        <td>Student</td>
-                        <td>Organization</td>
-                        <td>Action <i class="fa fa-cog "></i></td>
+                        <th>No.</th>
+                        <th>Student</th>
+                        <th>Organization</th>
+                        <th>Action <i class="fa fa-cog "></i></th>
                     </tr>
                 </thead>
                 <tbody>

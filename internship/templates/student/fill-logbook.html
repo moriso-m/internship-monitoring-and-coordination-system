@@ -6,10 +6,6 @@
 {% endblock title %}
 
 {% block content %}
-    <ul class="breadcrumb" style="margin-top:0px;">
-        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-        <li class="breadcrumb-item active">Fill logbook</li>
-    </ul>
 
     <div class="row">
         <a class="rounded-btn float-right justify-content-end" id="application-btn"
@@ -30,13 +26,23 @@
         {{ failed }}
     </div>
     {% endif %}
+    {% if entry_exists %}
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <em class="text-error">{{ entry_exists }}</em>
+        </div>
+    {% endif %}
+    {% if messages %}
+        
+        {% for msg in messages %}
+            <div class="alert alert-{{ msg.tags }}">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <em class="text-error">{{ msg }}</em>
+            </div>
+        {% endfor %}
+    {% endif %}
     {{ form.non_field_errors }}
-    <div class="card mt-3"></form>
-        <!-- <div class="card-header text-center">
-            Attachment application
-        </div> -->
-
-
+    <div class="card mt-3">
         <div class="row no-gutters">
             <div class="col-lg-4" id="">
                 <img src="{% static 'images/logo.png' %}" alt="Internship system"
@@ -46,7 +52,7 @@
                 <h5 class="card-title text-center">Today's activities</h5>
                 <form action="" method="post" class="" >
                     {% csrf_token %}
-                    
+                    <button class="btn btn-outline-info" id="update">Update</button>
                     {% for field  in form %}
                     <div class="form-group
                     {% if field.errors %}
@@ -58,8 +64,9 @@
                         <span class="text-danger">{{ field.errors }}</span>
                     </div>       
                     {% endfor %}
-                    <input type="hidden" name="student" value="{{ request.user }}">
-                    <button type="submit" class="rounded-btn col-md-6 offset-md-3" style="border-radius: 25px;">
+                    <input type="hidden" name="id" value="{{ details.id }}">
+                    <button type="submit" class="rounded-btn col-md-6 offset-md-3" 
+                        style="border-radius: 25px;" id="submit">
                         <i class="fa fa-pencil"></i>
                         Record activities
                     </button>
@@ -67,5 +74,25 @@
             </div>
         </div>
     </div>
+    <script>
+        // fetch details about work done for that day if they already exists
+    if("{{ work }}")
+        $('#work').val("{{ work.work_done }}");
+
+    if("{{ details }}"){
+        $('#work').val("{{ details.work_done }}")
+        $('#work').attr('readonly', true);
+        $(':text').val("{{ details.week }}")
+        $(':text').attr('readonly', true);
+        $('#submit').hide();
+    }
+
+    $('#update').click(function (e) { 
+        e.preventDefault();
+        $('#work').removeAttr('readonly');
+        $(':text').removeAttr('readonly');
+        $('#submit').show(600);
+    });
+    </script>
 {% endblock content %}
     

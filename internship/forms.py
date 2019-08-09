@@ -8,11 +8,11 @@ from django.contrib.auth.models import User
 class LoginForm(forms.ModelForm):
     username = forms.CharField(label='Admission no/ Staff no', max_length=50, required=True ,
                                 widget= forms.TextInput(
-                                    attrs={'class':'form-control col-lg-3','placeholder':'Adm no/ staff no'}
+                                    attrs={'class':'form-control col-md-8 offset-md-2','placeholder':'Adm no/ staff no'}
                                 ))
     password = forms.CharField(label= 'Password:', max_length=50, required=True,
                                widget = forms.PasswordInput(
-                                   attrs = {'class':'form-control col-lg-3', 'placeholder': 'Password...'}
+                                   attrs = {'class':'form-control col-md-8 offset-md-2', 'placeholder': 'Password...'}
                                ))
     class Meta:
         model = User
@@ -21,19 +21,19 @@ class LoginForm(forms.ModelForm):
 class RegisterForm(forms.ModelForm):
     username = forms.CharField(label='Admission no/ Staff no', max_length=50, required=True ,
                                 widget= forms.TextInput(
-                                    attrs={'class':'form-control col-lg-3','placeholder':'Adm no/ staff no'}
+                                    attrs={'class':'form-control col-md-8 offset-md-2','placeholder':'Adm no/ staff no'}
                                 ))
     email = forms.EmailField(label= 'Email address:', max_length=50, required=True,
                                widget = forms.TextInput(
-                                   attrs = {'class':'form-control col-lg-3', 'placeholder': 'Email address...'}
+                                   attrs = {'class':'form-control col-md-8 offset-md-2', 'placeholder': 'Email address...'}
                                ))
     password = forms.CharField(label= 'Password:', max_length=50, required=True,
                                widget = forms.PasswordInput(
-                                   attrs = {'class':'form-control col-lg-3', 'placeholder': 'Password...'}
+                                   attrs = {'class':'form-control col-md-8 offset-md-2', 'placeholder': 'Password...'}
                                ))
     confirm_password = forms.CharField(label= 'Confirm Password:', max_length=50, required=True,
                                widget = forms.PasswordInput(
-                                   attrs = {'class':'form-control col-lg-3', 'placeholder': ' confirm Password...'}
+                                   attrs = {'class':'form-control col-md-8 offset-md-2', 'placeholder': ' confirm Password...'}
                                ))
     
     class Meta:
@@ -88,6 +88,7 @@ class LogbookForm(forms.ModelForm):
     work_done = forms.CharField(label='Work done today:', required=True ,
                                 widget= forms.Textarea(
                                     attrs={'class':'form-control col-lg-12',
+                                           'id': 'work',
                                            'placeholder':'Tasks done ...',
                                            'rows' : '5',
                                            'columns' : '10'

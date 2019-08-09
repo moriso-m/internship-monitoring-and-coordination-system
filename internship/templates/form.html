@@ -15,19 +15,42 @@
         {% endfor %}
     </ul>
 {% endif %}
-  
 
-<div class="row col-lg-6 col-md-6 col-lg-offset-3" id="login-container">
+<div class="card mt-3 col-md-8 offset-md-2">
+    <!-- <div class="card-header text-center">
+        Attachment application
+    </div> -->
+    <div class="row no-gutters">
+        <div class="col-md-4 mb-auto mt-auto" id="">
+            <img src="{% static 'images/logo.png' %}" alt="Internship system"
+                height="180" class="img-responsive card-img" style="margin-top: 50px;">
+        </div>
+        <div class="card-body col-md-8" style="background:  rgba(153, 204, 255,0.15);">
+            <form action="" method="post" >
+                {% csrf_token %}
+                {% block formFields %}
+
+            
+                {% endblock formFields %}           
+            </form>
+        </div>
+    </div>
+</div>
+<!-- <div class="row col-lg-6 col-md-6 col-lg-offset-3" id="login-container">
     <div class="col-lg-5" id="login-image">
         <img src="{% static 'images/logo.png' %}" alt="Internship system">
     </div>
     <form action="" method="post" class="col-lg-7 col-md-7" >
       {% csrf_token %}
-      {% block formFields %}
+      
+      {% comment %}
+        {% block formFields %}
 
-              
-      {% endblock formFields %}           
+                
+        {% endblock formFields %}          
+      {% endcomment %}
+         
     </form>
-  </div>
+  </div> -->
 {% endblock content %}
     
