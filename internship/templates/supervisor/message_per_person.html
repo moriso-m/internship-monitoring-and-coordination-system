@@ -1,0 +1,148 @@
+{% extends 'supervisor/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Supervisor
+{% endblock title %}
+    
+
+{% block content %}
+    <h2 class="badge badge-success badge-pill text-center ">
+        <i class="fa fa-user"></i>
+        {{ student }}
+    </h2>
+    <div id="chats" style="overflow: auto;margin-bottom: 50px;">
+        {% for key,msg in messages.items %}
+            {% if msg.outgoing %}
+                <div class="writers-side pull-right col-lg-10 col-sm-10 col-xs-10 mt-3"
+                        id="{{ messages.id }}">
+                    <!-- <i class="fa fa-trash"></i> -->
+                    <div >
+                    {{ msg.message_content }}
+                    </div><br>
+                    <div class="pull-right time">
+                        {{ msg.time }}
+                    </div>
+                </div>         
+    
+            {% else %}
+                <div class="senders-side pull-left col-lg-10 col-sm-10 col-xs-10 mt-3"
+                        id="{{ messages.id }}" >
+                    <!-- <i class="fa fa-trash"></i> -->
+                    <div>
+                    {{ msg.message_content }}
+                    </div><br>
+                    <div class="pull-right time">
+                        {{ msg.time }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        
+    </div>
+    <div>
+        <form method="post" role="form">
+            <input type="hidden" name="student" id="student" value="{{ student.adm }}">
+            <div id="input-text">
+                <input type="text" id="replyText" placeholder="reply ..."
+                        class="">
+                <i class="fa fa-send fa-2x" id="send-button"></i>
+            </div>
+
+        </form>
+    </div>
+    <script>
+    $(document).ready(function () {
+        // alert(window.navigator.userAgent)
+        //prevent page from caching
+        $.ajaxSetup({
+            cache: false
+        });
+        //load chats after every 2 secs (asynchronous)
+        var student = $("#student").val();
+        setInterval(function () {
+            $.post(
+                "",
+                {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    student: student
+                },
+                function (data, status) {
+                    if (status === 'success')
+                            // convert object JSON to object
+                            data = JSON.parse(data)
+                            let receiver = '';
+                            for (const key in data) {
+                                if (data.hasOwnProperty(key)) {
+                                    const element = data[key];
+                                    if(data[key].outgoing){
+                                        // alert(data?[key].time)
+                                        receiver +=
+                                            '<div class="writers-side pull-right col-lg-10 col-sm-10 col-xs-10 mt-3">'+
+                                            '<div>'+
+                                                data[key].message_content+
+                                                '</div><br>'+
+                                                '<div class="pull-right time">'+
+                                                    data[key].time +
+                                                '</div>' +
+                                            '</div>' +
+                                        '';
+                                    }
+                                    else{
+                                        receiver += 
+                                        '<div class="senders-side pull-left col-lg-10 col-sm-10 col-xs-10 mt-3">'+
+                                            '<div>'+
+                                                data[key].message_content+
+                                                '</div><br>'+
+                                                '<div class="pull-right time">'+
+                                                    data[key].time +
+                                                '</div>' +
+                                        '</div>' +
+                                        '';
+                                    }
+                                    // receiver +='<div>'+
+                                    //         '<form method="post" role="form">'+
+                                    //             '<input type="hidden" name="student" id="student" value="{{ student.adm }}">'+
+                                    //             '<div id="input-text">'+
+                                    //                 '<input type="text" id="replyText" placeholder="reply ...">'+
+                                    //                 '<i class="fa fa-send fa-2x" id="send-button"></i>'+
+                                    //             '</div>'+
+                                    //         '</form>'+
+                                    //     '</div>';
+                                    $("#chats").html(receiver);
+                                }
+                            }
+                        // alert(data)
+                    if (status=== 'error')
+                        alert('failed to load');
+                }
+            );
+        }, 1000);
+        
+    });
+     $(document).ready(function () {
+       $("#send-button").click(function () {
+           var text=$("#replyText").val();
+           if (text !="" && text != null) {
+                $("#replyText").val("");
+               //ajax call to load chats from a given sender asynchronously
+               $.post(
+                   "http://127.0.0.1:8000/supervisor/send-message",
+                   {
+                       csrfmiddlewaretoken: '{{ csrf_token }}',
+                       student: '{{ student.adm }}',
+                       message: text
+                   },
+                   function (data, status) {
+                       if (status === 'success')
+                           $("#replyText").val("");
+                           $("#chats").html(data);
+                       if (status === 'error')
+                           $("#chats").text("an error occurred while trying to load chats.try loading again");
+                   });
+           }
+       });
+    });
+    </script>
+{% endblock  %}

@@ -1,0 +1,111 @@
+{% extends 'student/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Coordinator 
+{% endblock title %}
+    
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'studentIndex' %}">Home</a></li>
+        <li class="active breadcrumb-item"><i class="fa fa-comment"></i></li>
+    </ul>
+    <button class="new-msg " id="application-btn"  data-toggle="modal" data-target="#new-msg-modal">
+        <i class="fa fa-paper-plane-o"></i> New message
+    </button>
+    <div class="row">
+        {% regroup messages_c by coordinator as msg_c %}
+        {% regroup messages_s by supervisor as msg_s %}
+        <!-- {% for std in messages %}                
+            <a href="{% url 'viewMessages' std.coordinator %}" class="msg-link col-md-12">
+                <span class="sender ml-4">{{ std.coordinator }}</span><br>
+                <img src="{% static 'images/student.png' %}" alt="" class="img-responsive img-circle" height="30" width="30">
+                <span>{{ std.message_content }} </span><br>
+                <div class="time pull-right mb-0">{{ std.sent_on }}</div>
+            </a>
+        {% endfor %}
+    </div> -->
+
+
+    {% for std in msg_s %}                
+    <a href="{% url 'viewMessages' std.grouper.staff_no %}" class="msg-link col-md-12">
+
+        {% for adm in std.list %}
+            
+            {% if forloop.counter == 1 %}
+                <span class="sender ml-4">{{ std.grouper }}</span>
+                <span class="pull-right badge badge-danger badge-pill mr-2">{{ forloop.revcounter }}</span><br>
+                <img src="{% static 'images/student.png' %}" alt="" class="img-responsive img-circle" height="30" width="30">
+                <span>{{ adm.message_content }} </span><br>
+                <div class="time pull-right mb-0">{{ adm.sent_on }}</div>    
+            {% endif %}
+        {% endfor %}
+
+    </a>
+{% endfor %}
+
+    {% for std in msg_c %}                
+        <a href="{% url 'viewMessages' std.grouper.staff_no %}" class="msg-link col-md-12">
+
+            {% for adm in std.list %}
+                
+                {% if forloop.counter == 1 %}
+                    <span class="sender ml-4">{{ std.grouper }}</span>
+                    <span class="pull-right badge badge-danger badge-pill mr-2">{{ forloop.revcounter }}</span><br>
+                    <img src="{% static 'images/student.png' %}" alt="" class="img-responsive img-circle" height="30" width="30">
+                    <span>{{ adm.message_content }} </span><br>
+                    <div class="time pull-right mb-0">{{ adm.sent_on }}</div>    
+                {% endif %}
+            {% endfor %}
+
+        </a>
+    {% endfor %}
+
+    <div class="modal fade" id="new-msg-modal" tabindex="-1" role="dialog" aria-labelledby="status" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-dark text-center">
+                    <h5 class="modal-title " id="exampleModalLabel">
+                        <i class="fa fa-envelope text-danger"></i>
+                        Send to</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <select name="student" class="form-control col-md-6 offset-md-3" id="student-list">
+                        <option value="">----</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    let receiver = '{{ receiver | safe }}';
+    receiver = JSON.parse(receiver)
+    $('.new-msg').click(function (e) { 
+        e.preventDefault();
+        let select ='<option value="">----</option>';
+        for (const key in receiver) {
+            let elem = receiver[key];
+            if (receiver.hasOwnProperty(key)) {
+                select +='<option value="'+key+'">'+elem.name+'</option>';
+            }
+        }
+        select += '<option value="{{ coordinator.staff_no }}">{{ coordinator.full_name }} - Coordinator</option>';
+        $('#student-list').html(select);
+    });
+
+    // open link for sending messages when one chooses a student/ recipient
+    $("#student-list").change(function (e) { 
+        // e.preventDefault();
+        let receiver = $(this).val();
+        if (receiver != null && receiver!= ''){
+            let link = 'view-messages/'+receiver;
+            location.href = link;
+        }
+    });
+    </script>
+{% endblock %}

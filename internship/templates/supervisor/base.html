@@ -17,6 +17,7 @@
 
 	<script src="{%  static 'jquery-3.3.1.min.js' %}"></script>
 	<script src="{%  static 'bootstrap-4.0.0\js\bootstrap.min.js' %}"></script>
+	<script src="{%  static 'main.js' %}"></script>
 
 	<!-- data tables -->
     <!-- <script src="{%  static 'datatables\datatables.min.js' %}"></script> -->
@@ -40,17 +41,24 @@
 		</div>
 		<div class="collapse navbar-collapse " id="myNavbar">
 			<ul class="nav navbar-nav ml-auto" >
-                <li class="nav-item justify-content-end">
-                    <a href="" class="nav-link">
+				<li class="nav-item justify-content-end">
+					<a href="{% url 'supervisorIndex' %}" class="nav-link">
+						<i class="" style="color:#001a33; "></i>
+						Home
+					</a>
+				</li>
+                <li class="nav-item justify-content-end mr-4">
+                    <a href="{% url 'notifications' %}" class="nav-link" style="position: relative;">
                         <i class="fa fa-bell fa-2x" style="color:#001a33; "></i>
                     </a>
                 </li>
-                <li class="nav-item justify-content-end">
-                    <a href="" class="nav-link">
-                        <i class="fa fa-home fa-2x" style="color:#001a33; "></i>
+                <li class="nav-item justify-content-end mr-4">
+                    <a href="{% url 'messagesSupervisor' %}" class="nav-link" style="position: relative;">
+						<span class="badge badge-pill badge-danger msg-indicator-nav">{{ unread_msg }}</span>
+                        <i class="fa fa-envelope fa-2x" style="color:#001a33; "></i>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mr-4">
 					<a href="" class="nav-link">
                         <i class="fa fa-question-circle fa-2x" style="color:#001a33; "></i>
 					</a>
@@ -78,7 +86,7 @@
 		</div>
     </nav>
    <div class="row">
-	   <div class="dashboard col-lg-3 col-md-3" id="dashboard">
+	   <div class="dashboard col-md-3" id="dashboard">
 			<div class="avatar">
 				<img src="{% static 'images/student.png'%}" class=" img-circle img-responsive" alt="avatar">
 				<div class="text">
@@ -102,18 +110,19 @@
 						Student's logbook
 					</a>
 				</li>
-			   <li><a href="{% url 'notifications' %}">
-				   <i class="fa fa-bell fa-2x dashboard-icons"></i>
-					Notifications</a>
-				</li>
-			   <li><a href="{% url 'sendMessage' %}">
+			   <li><a href="{% url 'messagesSupervisor' %}">
 					<i class="fa fa-envelope fa-2x dashboard-icons"></i>
 					Messages
 					</a>
 				</li>
+			   <li><a href="{% url 'assessmentSupervisor' %}">
+					<i class="fa fa-address-book fa-2x dashboard-icons"></i>
+					Assessment Report
+					</a>
+				</li>
 		   </ul>
 	   </div>
-	   <div class="col-lg-9 col-md-9" style="background: rgba(153, 204, 255,0.12);min-height:80vh;">
+	   <div class="col-md-9" style="background: rgba(153, 204, 255,0.12);min-height:80vh;">
 			{% block content %}
                 
 			{% endblock content %}

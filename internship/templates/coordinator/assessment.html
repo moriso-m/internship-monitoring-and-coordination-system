@@ -1,0 +1,45 @@
+{% extends 'coordinator/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Assessment report
+{% endblock title %}
+    
+{% block content %}
+<a class="rounded-btn pull-right" id="application-btn" href="{% url 'assessmentCoordinatorPdf' %}">
+    <i class="fa fa-file-pdf-o"></i>
+    Print
+</a>
+    <div class="table-responsive-vertical">
+        <table class="table table-striped table-bordered table-hover" id="assessment">
+             <thead>
+             <tr>
+                 <th>Student</th>
+                 <th>Course</th>
+                 <th>Date of assessment</th>
+                 <th>Assessing Lecturer</th>
+             </tr>
+             </thead>
+             <tbody>
+             {% for item in assessed %}
+                 <tr>
+                     <td data-title="">{{ item.student }}</td>
+                     <td data-title="">{{ item.student.course_code }}</td>
+                     <td data-title="">{{ item.date }}</td>
+                     <td data-title="">{{ item.lecturer }}</td>
+                 </tr>
+             {% endfor%}
+             </tbody>
+             <tfoot>
+             </tfoot>
+        </table>
+    </div>
+    <script>
+        $(document).ready( function () {
+            $('#assessment').DataTable();
+        });
+    </script>
+{% endblock content %}
+    

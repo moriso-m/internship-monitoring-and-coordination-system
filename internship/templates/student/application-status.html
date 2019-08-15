@@ -9,7 +9,7 @@
     
 {% block content %}
     <div>
-        <table class="table  table-bordered table-striped table-hover" id="applications">
+        <!-- <table class="table  table-bordered table-striped table-hover" id="applications">
             <thead>
                 <tr>
                     <th>No.</th>
@@ -18,8 +18,29 @@
                     <th>Status</th>
                 </tr>
             </thead>
-             <tbody>
+             <tbody> -->
              {% for application in applications%}
+                <h4 class="text-center text-info">{{  application.organization }}</h4>
+                <p>branch: {{ application.branch }}</p>
+                <p>Status:
+                    
+                    {% if application.status == 'P' %}
+                    <span class="badge badge-warning">Pending</span>
+                 {% endif %}
+                 {% if application.status == 'A' %}
+                    <span class="badge badge-info">Awaiting</span>
+                 {% endif %}
+                 {% if application.status == 'F' %}
+                    <span class="badge badge-danger">Failed</span>
+                 {% endif %}
+                 {% if application.status == 'S' %}
+                    <span class="badge badge-success">Successfull</span>
+                 {% endif %}
+                    
+                        
+                </p>
+                <hr>
+            {% endfor %}
                  <tr>
                      <td data-title="">{{ forloop.counter }}</td>
                      <td data-title="">{{ application.organization }}</td>
@@ -28,11 +49,15 @@
                          <a class="badge badge-info">{{ application.status }}</a>
                     </td>
                  </tr>
+             
+             {% comment %}
              {% endfor%}
-             </tbody>
+             {% endcomment %}
+                  
+             <!-- </tbody>
              <tfoot>
              </tfoot>
-        </table>
+        </table> -->
     </div>
     <script>
     $(document).ready( function () {

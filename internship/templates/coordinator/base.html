@@ -74,12 +74,16 @@
 						<i class="fa fa-bell fa-2x"></i>
 					</a> -->
 				</li>
-				<li class="nav-item">
+				<!-- <li class="nav-item">
 					<a href="{% url 'logout' %}" class="nav-link">Logout</a>
-				</li>
-                <li>
-					<a href=" {% url 'login' %}">
-							<img src="{% static 'images/student.png' %}" alt="" height="35">
+				</li> -->
+                <li class="dropdown">
+					<img src="{% static 'images/student.png' %}" alt="" height="35"
+						class="dropdown-toggle" data-toggle="dropdown">
+					<i class="fa fa-caret-down"></i>
+					<ul class="dropdown-menu mr-5">
+						<li><a href=" {% url 'logout' %}" class="alert-link">Logout</li>
+					</ul>
 					</a>
                 </li>
 			</ul>
@@ -105,13 +109,31 @@
 					</a>
 				</li>
 			   <li>
+				   <a href=" {% url 'supervisors' %}">
+						<i class="fa fa-user fa-2x dashboard-icons"></i>
+						Supervisors
+					</a>
+				</li>
+			   <li>
+				   <a href=" {% url 'assessmentCoordinator' %}">
+						<i class="fa fa-address-book fa-2x dashboard-icons"></i>
+						Assessment report
+					</a>
+				</li>
+			   <li>
 				   <a href=" {% url 'coordinatorApplications' %}">
 						<i class="fa fa-folder-open fa-2x dashboard-icons"></i>
 						Student' applications
 					</a>
 				</li>
+			   <li>
+				   <a href=" {% url 'organizationsCoordinator' %}">
+						<i class="fa fa-university fa-2x dashboard-icons"></i>
+						Attachment organization
+					</a>
+				</li>
 			   <li><a href=" {% url 'updateStatus' %}">
-					<i class="fa fa-spinner fa-spin fa-2x dashboard-icons"></i>
+					<i class="fa fa-refresh fa-2x dashboard-icons"></i>
 					Application status</a></li>
 			   <li><a href="{% url 'notifications' %}">
 				   <i class="fa fa-bell fa-2x dashboard-icons"></i>

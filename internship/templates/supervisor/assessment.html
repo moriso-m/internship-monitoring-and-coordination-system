@@ -1,0 +1,49 @@
+{% extends 'supervisor/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Assessment report
+{% endblock title %}
+    
+{% block content %}
+<div class="row">
+    <a class="rounded-btn pull-right mr-3" id="application-btn" href="{% url 'assessmentSupervisorPdf' %}">
+        <i class="fa fa-file-pdf-o"></i>
+        Print
+    </a>
+    <a class="rounded-btn pull-right " id="application-btn" href="{% url 'addAssessment' %}">
+        <i class="fa fa-plus"></i>
+        Add assessed student
+    </a>
+</div>
+    <div class="table-responsive-vertical">
+        <table class="table table-striped table-bordered table-hover" id="assessment">
+             <thead>
+             <tr>
+                 <th>Student</th>
+                 <th>Course</th>
+                 <th>Date of assessment</th>
+             </tr>
+             </thead>
+             <tbody>
+             {% for item in assessed %}
+                 <tr>
+                     <td data-title="">{{ item.student }}</td>
+                     <td data-title="">{{ item.student.course_code }}</td>
+                     <td data-title="">{{ item.date }}</td>
+                 </tr>
+             {% endfor%}
+             </tbody>
+             <tfoot>
+             </tfoot>
+        </table>
+    </div>
+    <script>
+        $(document).ready( function () {
+            $('#assessment').DataTable();
+        });
+    </script>
+{% endblock content %}
+    

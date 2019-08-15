@@ -1,0 +1,131 @@
+{% extends 'supervisor/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Assessment report
+{% endblock title %}
+    
+{% block content %}
+<ul class="breadcrumb">
+    <li class="breadcrumb-item active"><a href="{% url 'supervisorIndex' %}">Home</a></li>
+    <li class="breadcrumb-item">Add assessment</li>
+</ul>
+<a class="rounded-btn pull-right" id="application-btn" href="{% url 'assessmentSupervisor' %}">
+    <i class="fa fa-file-pdf-o"></i>
+    View assessment
+</a>
+
+
+{% if messages %}
+    
+    {% for msg in messages %}
+        
+        {% if msg.tags == 'error' %}
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                {{ msg }}
+            </div>
+        {% else %}
+            <div class="alert alert-{{ msg.tags }}">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                {{ msg }}
+            </div>
+        {% endif %}
+            
+
+    {% endfor %}
+        
+{% endif %}
+    
+<form action="" method="post" class="mt-5" id="form">
+    {% csrf_token %}
+    <div class="form-group col-md-4 offset-md-4">
+        <label for="Student">Course</label>
+        <select name="student" id="course" class="form-control" required>
+            <option value="">----</option>
+            
+            {% for crs in courses %}
+                <option value="{{ crs.course_name }}">{{ crs.course_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group col-md-4 offset-md-4">
+        <label for="student">Students:</label>
+        <select name="student" id="student"  class="form-control" disabled required>
+            <option value="">----</option>
+        </select>
+    </div>
+    <div class="form-group col-md-4 offset-md-4">
+        <label for="date">Date:</label>
+        <input type="date" name="date" id="date" class="form-control" required>
+    </div>
+    <button class="col-md-2 offset-md-5" id="application-btn" type="submit">
+        <i class="fa-fa-plus"></i>
+        Add
+    </button>
+</form>
+
+<script>
+    let students = '{{ students | safe }}';
+    students = JSON.parse(students);
+    
+    $('#course').change(function (e) { 
+        e.preventDefault();
+        let val = $(this).val();
+        let option = '<option value="">----</option>';
+        for (const key in students) {
+            if (students.hasOwnProperty(key)) {
+                const elem = students[key];
+                if (elem.course == val) {
+                    option +='<option value="'+key+'">'+elem.name+'</option>';
+                }
+            }
+        }
+        $('#student').html(option);
+        $('#student').removeAttr('disabled');
+    });
+
+    $('#date').blur(function (e) { 
+        e.preventDefault();
+        let today = new Date()
+        let val = $(this).val();
+        y = new Date(val).getFullYear()
+        m= new Date(val).getMonth();
+        d = new Date(val).getDate()
+        choice = new Date();
+        choice.setFullYear(y, m, d);
+   
+        if (choice > today) {
+            e.preventDefault();
+            alert('Invalid date, Dates should be either today or earlier')
+        }
+        else if(choice.getFullYear() < today.getFullYear()){
+            e.preventDefault();
+            alert('Invalid date, Assessment year should be the year '+today.getFullYear()) 
+        }
+    });
+
+    $('#form').submit(function (e) { 
+
+        today = new Date();
+        let val = $('#date').val();
+        y = new Date(val).getFullYear()
+        m= new Date(val).getMonth();
+        d = new Date(val).getDate()
+        choice = new Date();
+        choice.setFullYear(y, m, d);
+        alert(choice)
+   
+        if (choice > today) {
+            e.preventDefault();
+            alert('Invalid date, Dates should be either today or earlier')
+        }
+        else if(choice.getFullYear() < today.getFullYear()){
+            e.preventDefault();
+            alert('Invalid date, Assessment date should be the year '+today.getFullYear()) 
+        }
+    });
+</script>
+{% endblock%}

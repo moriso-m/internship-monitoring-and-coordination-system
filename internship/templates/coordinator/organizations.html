@@ -1,0 +1,47 @@
+{% extends 'coordinator/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Students
+{% endblock title %}
+    
+{% block content %}
+<a class="rounded-btn pull-right" id="application-btn" href="{% url 'organizationsCoordinatorPdf' %}">
+    <i class="fa fa-download"></i>
+    Print
+</a>
+<div class="table-responsive-vertical">
+    <table class="table table-striped table-bordered table-hover" id="organizations">
+            <thead>
+            <tr>
+                <th>Student</th>
+                <th>Organization name</th>
+                <th>County</th>
+                <th>Town</th>
+                <th>Building</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key,organization in organizations.items %}
+                <tr>
+                    <td data-title="">{{ organization.student }}</td>
+                    <td data-title="">{{ organization.organization }}</td>
+                    <td data-title="">{{ organization.county }}</td>
+                    <td data-title="">{{ organization.town }}</td>
+                    <td data-title="">{{ organization.building }}</td>
+                </tr>
+            {% endfor%}
+            </tbody>
+            <tfoot>
+            </tfoot>
+    </table>
+</div>
+<script>
+    $(document).ready( function () {
+        $('#organizations').DataTable();
+    });
+</script>
+{% endblock content %}
+    

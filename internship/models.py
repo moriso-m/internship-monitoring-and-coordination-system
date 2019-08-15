@@ -132,3 +132,11 @@ class Notification(models.Model):
     content = models.TextField()
     date = models.DateTimeField(auto_now=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+
+
+class Assessment(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    lecturer = models.ForeignKey(Supervisor, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department,default="", on_delete=models.CASCADE)
+    date = models.DateField( auto_now=False, auto_now_add=False)
+

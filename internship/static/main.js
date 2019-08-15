@@ -203,3 +203,33 @@ counties =[{
             
         }
     });
+
+  
+    function organization_details(id,organization){
+        organization = JSON.parse(organization)
+        // obtain keys in the JSON containing organization details for each student
+        for (const key in organization) {
+            if (organization.hasOwnProperty(key)) {
+                const adm = organization[key].adm;
+                // alert(adm)
+                // fetch details for appropriate student
+                if (adm == id) {
+                    $('#name').text(organization[key].name);
+                    $('#adm').text(organization[key].adm);
+                    $('#org').text(organization[key].organization);
+                    $('#county').text(organization[key].county);
+                    $('#town').text(organization[key].town);
+                    $('#building').text(organization[key].building);
+                    break;
+                }
+                else{
+                    $('#name').text('');
+                    $('#adm').text(id);
+                    $('#org').text('null');
+                    $('#county').text('null');
+                    $('#town').text('null');
+                    $('#building').text('null');
+                }
+            }
+        }
+    }

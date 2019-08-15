@@ -19,6 +19,7 @@
             {{ field }}
         </div>
     {% endfor %}
+    
     <div class="" >
         <button class="rounded-btn col-md-6 offset-md-3" type="submit">
             Register
@@ -27,5 +28,41 @@
     <div class="col-lg-12 col-md-12">
         <p><a href="{% url 'login' %}" class="btn-link">Already have an account?</a></p>
     </div>
+
+    <script>
+        $('#password').before('<p style="color: #a94442;" id="errors"></p>');
+    $('#form').submit(function (e) { 
+       
+        let pass = $('#password').val()
+        let confirm =$('#confirm').val()
+        if (pass === confirm) {
+            if (pass.length >= 6) {
+                var regex=/[a-zA-Z\s][0-9]+/gi;
+                var flag=regex.test(pass);
+                if(!flag){
+                    e.preventDefault();
+                    // alert('Password should contain alphanumerics (A-Z and 0-9)');
+                    $('#errors').text('* Password should contain alphanumerics (A-Z and 0-9)');
+                    // $('#errors').before('<p style="color: #a94442;" id="errors">* Password should contain alphanumerics (A-Z and 0-9)</p>');
+                }
+            }
+            else{
+                e.preventDefault();
+                // alert('Password should be at least Six characters');
+                $('#errors').text('*Password should be at least Six characters');
+                // $('#errors').before('<p style="color: #a94442;" id="errors">*Password should be at least Six characters</p>');
+            }            
+        }
+        else{
+            e.preventDefault();
+            // alert('password and confirm password do not match')
+            $('#errors').text('* password and confirm password do not match');
+            // $('#password').before('<p style="color: #a94442;" id="errors">* password and confirm password do not match</p>');
+        }
+
+    });
+
+
+    </script>
 {% endblock formFields %}
     

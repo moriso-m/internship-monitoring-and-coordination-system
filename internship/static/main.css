@@ -7,6 +7,7 @@ html, body {
     margin: 0;
     border:1px solid #ddd;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    /* background: url('images/y.jpg') fixed; */
 }
 header{
     width: 300px;
@@ -62,22 +63,33 @@ header{
 	left:15px;
 	top: 25px;
 }
+/* .content{
+    background: url('images/y.jpg');
+} */
+
 .content .user{
     position: relative;
     height: 300px;
+    width:300px;
     border:1px dotted #ddd;
-    border-radius: 8px;
+    border-radius: 100%;
     background: rgba(0, 0, 0, 0.08);
+    transition: all 1s;
+}
+.content .user:hover{
+    border-radius: 0px;
+    width:400px;
 }
 .content .user img{
-    margin:5px auto;
-    width: 90px;
-    height: 90px;
+    margin:5px 45px;
+    width: 200px;
+    height: 200px;
 }
 .content .user h3{
     position: absolute;
     bottom: 4px;
-    left: 33.3%;
+    left: 25%;
+    font-size: 1.6em;
     color:#008ae6;
     cursor: pointer;
 }
@@ -174,16 +186,26 @@ footer{
 }
 #application-btn{
     color: #001a33;
+    font-weight: bold;
     border: 2px solid #001a33;
+    border-radius: 30px;
     background: #fff;
-    transition: all 1.5s;
+    height: 35px;
+    min-width: 170px;
+    transition: all 0.5s ease-in;
+    text-align: center;
 }
 #application-btn:hover{
     text-decoration: none;
     background: #001a33;
+    background: radial-gradient(#001a33 , #00284d);
     color:#fff;
-    border: 2px solid #b3d9ff;
+    border: none;
+    min-width: 180px;
 }
+/* #application-btn:hover::after{
+    content: '\2709';
+} */
 #login-image{
     /* border-right: 1px solid #ddd; */
     height:380px;
@@ -313,7 +335,7 @@ footer{
 #reply .form-row input{
     position: fixed;
     bottom: 5px;
-
+    border: 3px solid #008ae6;
 }
 
 
@@ -352,7 +374,7 @@ footer{
 
 .new-msg{
     position: fixed;
-    top: 500px;
+    top: 200px;
     right:30px;
 }
 .writers-side, .senders-side{

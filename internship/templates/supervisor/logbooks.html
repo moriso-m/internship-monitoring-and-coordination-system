@@ -30,7 +30,7 @@
                     <td>{{ student.student.full_name }}</td>
                     <td>
                         <a href=" {% url 'studentLogbook' student.student.adm %}" class="badge badge-success">View logbook</a>
-                        <a href=" {% url 'studentLogbook' student.student.adm %}" class="badge badge-warning">Message</a>
+                        <a href=" {% url 'refreshChatsSupervisor' student.student.adm %}" class="badge badge-warning">Message</a>
                     </td>
                 </tr>
             {% endfor %}

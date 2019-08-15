@@ -38,12 +38,15 @@
                         Supervisors
                     </h5>
                     <div class="card-body ">
-                        <p class="card-text"><i class="fa fa-check"></i> Allocated:</p>
+                        <p class="card-text"><i class="fa fa-check"></i> 
+                            Allocations:
+                            <span class="badge badge-success">{{ allocated_supervisors }}</span>
+                        </p>
                         <p class="card-text"><i class="fa fa-close"></i> Unallocated:</p>
                         <a href="" class=""><i class="fa fa-user"></i> Supervisors</a>
-                            (<span class="badge badge-danger">10</span>)<br>
-                        <a href="" class="card-link"> Allocate supervisors</a>
-                            (<span class="badge badge-success">5</span>)
+                            (<span class="badge badge-danger">{{ supervisors }}</span>)<br>
+                        <a href="" class="card-link"> Supervisor allocations</a>
+                            (<span class="badge badge-success">{{ allocated_supervisors }}</span>)
                     </div>
                 </div>
             </div>

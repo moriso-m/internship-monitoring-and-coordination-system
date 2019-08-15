@@ -1,15 +1,15 @@
-{% extends 'coordinator/base.html' %}
+{% extends 'supervisor/base.html' %}
 
 {% load static %}
 
 {% block title %}
-    Coordinator 
+    Supervisor 
 {% endblock title %}
     
 
 {% block content %}
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'coordinatorIndex' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'supervisorIndex' %}">Home</a></li>
         <li class="active breadcrumb-item"><i class="fa fa-comment"></i></li>
     </ul>
     <button class="new-msg " id="application-btn"  data-toggle="modal" data-target="#new-msg-modal">
@@ -28,7 +28,7 @@
         
         
         {% for std in per_student %}                
-            <a href="{% url 'refreshChats' std.grouper.adm %}" class="msg-link col-md-12">
+            <a href="{% url 'refreshChatsSupervisor' std.grouper.adm %}" class="msg-link col-md-12">
 
                 {% for adm in std.list %}
                     

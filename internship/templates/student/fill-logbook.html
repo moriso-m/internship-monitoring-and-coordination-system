@@ -76,13 +76,13 @@
     </div>
     <script>
         // fetch details about work done for that day if they already exists
-    if("{{ work }}")
+    if("{{ work | safe }}")
         $('#work').val("{{ work.work_done }}");
 
     if("{{ details }}"){
-        $('#work').val("{{ details.work_done }}")
+        $('#work').val("{{ details.work_done | escapejs }}")
         $('#work').attr('readonly', true);
-        $(':text').val("{{ details.week }}")
+        $(':text').val("{{ details.week | safe }}")
         $(':text').attr('readonly', true);
         $('#submit').hide();
     }
@@ -92,6 +92,14 @@
         $('#work').removeAttr('readonly');
         $(':text').removeAttr('readonly');
         $('#submit').show(600);
+    });
+
+    $('#week').change(function (e) { 
+        e.preventDefault();
+        let change = confirm('Are you sure you want to change the week?')
+        if(!change){
+            $(this).val('{{ details.week }}')
+        }
     });
     </script>
 {% endblock content %}

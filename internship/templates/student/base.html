@@ -40,17 +40,23 @@
 		</div>
 		<div class="collapse navbar-collapse " id="myNavbar">
 			<ul class="nav navbar-nav ml-auto" >
-                <li class="nav-item justify-content-end">
-                    <a href="{% url 'notification' %}" class="nav-link">
-                        <i class="fa fa-bell fa-2x" style="color:#001a33; "></i>
-                    </a>
-                </li>
-                <li class="nav-item justify-content-end">
+					<li class="nav-item justify-content-end mr-4">
+						<a href="{% url 'notification' %}" class="nav-link" style="position: relative;">
+							<i class="fa fa-bell fa-2x" style="color:#001a33; "></i>
+						</a>
+					</li>
+					<li class="nav-item justify-content-end mr-4">
+						<a href="{% url 'studentMessages' %}" class="nav-link" style="position: relative;">
+							<span class="badge badge-pill badge-danger msg-indicator-nav">{{ unread_msg }}</span>
+							<i class="fa fa-envelope fa-2x" style="color:#001a33; "></i>
+						</a>
+					</li>
+                <li class="nav-item justify-content-end mr-4">
                     <a href="" class="nav-link">
                         <i class="fa fa-home fa-2x" style="color:#001a33; "></i>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mr-4">
 					<a href="" class="nav-link">
                         <i class="fa fa-question-circle fa-2x" style="color:#001a33; "></i>
 					</a>
@@ -61,19 +67,15 @@
 						View applications
 					</a>
 				</li> -->
-				<li>
-					<!-- <a href="">
-						<i class="fa fa-bell fa-2x"></i>
-					</a> -->
-				</li>
-				<li class="nav-item">
-					<a href="{% url 'logout' %}" class="nav-link">Logout</a>
-				</li>
-                <li>
-					<a href=" {% url 'login' %}">
-							<img src="{% static 'images/student.png' %}" alt="" height="35">
+                <li class="dropdown">
+					<img src="{% static 'images/student.png' %}" alt="" height="35"
+						class="dropdown-toggle" data-toggle="dropdown">
+					<i class="fa fa-caret-down"></i>
+					<ul class="dropdown-menu mr-5">
+						<li><a href=" {% url 'logout' %}" class="alert-link">Logout</li>
+					</ul>
 					</a>
-                </li>
+				</li>
 			</ul>
 		</div>
     </nav>
@@ -92,12 +94,12 @@
 		   <ul>
 			   <li>
 				   <a href="{% url 'application' %}">
-						<i class="fa a-file-word-o fa-2x dashboard-icons"></i>
+						<i class="fa fa-pencil fa-2x dashboard-icons"></i>
 						Internship application
 					</a>
 				</li>
 			   <li><a href="{% url 'applicationStatus' %}">
-					<i class="fa fa-spinner fa-spin fa-2x dashboard-icons"></i>
+					<i class="fa fa-refresh fa-2x dashboard-icons"></i>
 					Application status</a></li>
 			   <li><a href=" {% url 'organization' %}">
 				   <i class="fa fa-industry fa-2x dashboard-icons"></i>

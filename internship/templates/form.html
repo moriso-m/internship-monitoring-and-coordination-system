@@ -16,7 +16,7 @@
     </ul>
 {% endif %}
 
-<div class="card mt-3 col-md-8 offset-md-2">
+<div class="card mt-3 col-md-6 offset-md-3">
     <!-- <div class="card-header text-center">
         Attachment application
     </div> -->
@@ -26,7 +26,7 @@
                 height="180" class="img-responsive card-img" style="margin-top: 50px;">
         </div>
         <div class="card-body col-md-8" style="background:  rgba(153, 204, 255,0.15);">
-            <form action="" method="post" >
+            <form action="" method="post" id="form">
                 {% csrf_token %}
                 {% block formFields %}
 

@@ -29,11 +29,13 @@ class RegisterForm(forms.ModelForm):
                                ))
     password = forms.CharField(label= 'Password:', max_length=50, required=True,
                                widget = forms.PasswordInput(
-                                   attrs = {'class':'form-control col-md-8 offset-md-2', 'placeholder': 'Password...'}
+                                   attrs = {'class':'form-control col-md-8 offset-md-2', 
+                                            'placeholder': 'Password...', 'id': 'password'}
                                ))
     confirm_password = forms.CharField(label= 'Confirm Password:', max_length=50, required=True,
                                widget = forms.PasswordInput(
-                                   attrs = {'class':'form-control col-md-8 offset-md-2', 'placeholder': ' confirm Password...'}
+                                   attrs = {'class':'form-control col-md-8 offset-md-2', 
+                                            'placeholder': ' confirm Password...', 'id': 'confirm'}
                                ))
     
     class Meta:
@@ -101,7 +103,8 @@ class LogbookForm(forms.ModelForm):
     #                         ))
     week = forms.CharField(label="Week:",widget= forms.TextInput(
                             attrs={'class':'form-control col-md-6 offset-md-3',
-                                    'placeholder':'Week in digit format'
+                                    'placeholder':'Week in digit format',
+                                    'id':'week',
                                 }
                         ))
     class Meta:
